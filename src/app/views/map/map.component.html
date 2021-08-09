@@ -1,0 +1,5 @@
+<div class="map" leaflet
+     [leafletOptions]="mapOptions"
+     [leafletLayersControl]="layersControl"
+     (leafletMapMove)="handleMapMove($event)"
+     (leafletMapReady)="onMapReady($event)"></div>
