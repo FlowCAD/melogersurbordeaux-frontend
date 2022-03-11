@@ -8,12 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { environment } from '../environments/environment';
-import { MapComponent } from './views/map/map.component';
+
+import { ApartmentComponent } from '@views/apartment/apartment.component';
+import { MapComponent } from '@views/map/map.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    ApartmentComponent
   ],
   imports: [
     BrowserModule,
