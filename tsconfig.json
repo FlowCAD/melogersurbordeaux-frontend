@@ -22,6 +22,7 @@
     ],
     "paths": {
       "@app/*": ["src/app/*"],
+      "@core/*": ["src/app/core/*"],
       "@views/*": ["src/app/views/*"]
     }
   },

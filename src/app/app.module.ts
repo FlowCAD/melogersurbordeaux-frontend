@@ -6,17 +6,31 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { MatIconModule } from "@angular/material/icon";
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { environment } from '../environments/environment';
 
+import { TopbarComponent } from '@core/topbar/topbar.component';
+
 import { ApartmentComponent } from '@views/apartment/apartment.component';
+import { FormComponent } from '@views/form/form.component';
+import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
+import { RegisterComponent } from '@views/register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    // Core
+    TopbarComponent,
+    // Views
+    ApartmentComponent,
+    FormComponent,
+    LoginComponent,
     MapComponent,
-    ApartmentComponent
+    RegisterComponent,
+    TopbarComponent
   ],
   imports: [
     BrowserModule,
@@ -29,6 +43,8 @@ import { MapComponent } from '@views/map/map.component';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
+    MatIconModule,
+    MatToolbarModule,
     LeafletModule
   ],
   providers: [],
