@@ -1,1 +1,17 @@
-<p>register works!</p>
+<mat-card>
+  <mat-card-content>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+      <mat-card-title>Créer un compte</mat-card-title>
+      <mat-form-field>
+        <input matInput placeholder="Nom" [(ngModel)]="userData.name" name="name" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Mot de passe" [(ngModel)]="userData.password" name="password" required>
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">S'enregistrer'</button>
+    </form>
+  </mat-card-content>
+</mat-card>

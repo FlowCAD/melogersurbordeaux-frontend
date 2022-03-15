@@ -2,9 +2,7 @@
   <mat-card-content>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
       <mat-card-title>Connexion</mat-card-title>
-      <mat-error *ngIf="!loginValid">
-        Le nom et/ou le mot de passe n'ont pas été reconnu.
-      </mat-error>
+      <mat-error *ngIf="!loginValid">Le nom et/ou le mot de passe n'ont pas été reconnu.</mat-error>
       <mat-form-field>
         <input matInput placeholder="Nom" [(ngModel)]="userData.name" name="name" required>
         <mat-error>Nom incorrect.</mat-error>
@@ -16,7 +14,13 @@
         </button>
         <mat-error>Mot de passe incorrect.</mat-error>
       </mat-form-field>
-      <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Login</button>
+      <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Se connecter</button>
     </form>
+
+    <br>
+    <mat-divider></mat-divider>
+
+    <p>Pour créer un compte, cliquer sur <i>s'enregistrer</i></p>
+    <button mat-raised-button color="accent" routerLink="/register">S'enregistrer</button>
   </mat-card-content>
 </mat-card>
