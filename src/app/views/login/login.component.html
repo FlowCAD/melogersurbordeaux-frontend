@@ -1,1 +1,22 @@
-<p>login works!</p>
+<mat-card>
+  <mat-card-content>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+      <mat-card-title>Connexion</mat-card-title>
+      <mat-error *ngIf="!loginValid">
+        Le nom et/ou le mot de passe n'ont pas été reconnu.
+      </mat-error>
+      <mat-form-field>
+        <input matInput placeholder="Nom" [(ngModel)]="userData.name" name="name" required>
+        <mat-error>Nom incorrect.</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Mot de passe" [(ngModel)]="userData.password" name="password" required>
+        <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+        <mat-error>Mot de passe incorrect.</mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid">Login</button>
+    </form>
+  </mat-card-content>
+</mat-card>

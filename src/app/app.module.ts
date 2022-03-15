@@ -1,15 +1,17 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { MatIconModule } from "@angular/material/icon";
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { environment } from '../environments/environment';
+
+import { MaterialModule } from './material.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { TopbarComponent } from '@core/topbar/topbar.component';
 
@@ -30,12 +32,12 @@ import { RegisterComponent } from '@views/register/register.component';
     LoginComponent,
     MapComponent,
     RegisterComponent,
-    TopbarComponent
   ],
   imports: [
-    BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
+    FlexLayoutModule,
+    FormsModule,
+    BrowserModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -43,9 +45,9 @@ import { RegisterComponent } from '@views/register/register.component';
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:30000'
     }),
-    MatIconModule,
-    MatToolbarModule,
-    LeafletModule
+    AppRoutingModule,
+    MaterialModule,
+    LeafletModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

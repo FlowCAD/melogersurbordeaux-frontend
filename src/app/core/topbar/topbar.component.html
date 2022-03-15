@@ -1,10 +1,51 @@
-<mat-toolbar>
-  <span>Meloger.com</span>
-  <span style="flex: 1 1 auto;"></span>
-  <button mat-icon-button routerLink="/map">
-    <mat-icon>map</mat-icon>
-  </button>
-  <button mat-icon-button routerLink="/login">
-    <mat-icon>login</mat-icon>
+<mat-toolbar color="primary" fxLayout="row" fxLayoutAlign="space-between center">
+  <span>
+    <button mat-button routerLink="/">{{title}}</button>
+  </span>
+
+  <div fxLayout="row" fxShow="false" fxShow.gt-sm>
+    <button mat-button routerLink="/map">
+      <mat-icon>map</mat-icon> Carte
+    </button>
+    <button mat-button routerLink="/apartments">
+      <mat-icon>info</mat-icon> Appartements
+    </button>
+    <button mat-button routerLink="/form" disabled>
+      <mat-icon>list</mat-icon> Formulaire
+    </button>
+
+    <div *ngIf="isAuthenticated; then logoutBlock else loginBlock"></div>
+    <ng-template #logoutBlock>
+      <button mat-button (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon> Logout
+      </button>
+    </ng-template>
+    <ng-template #loginBlock>
+      <button mat-button routerLink="/login">
+        <mat-icon>power_settings_new</mat-icon> Login
+      </button>
+    </ng-template>
+  </div>
+
+  <button mat-button [mat-menu-trigger-for]="menu" fxHide="false" fxHide.gt-sm>
+    <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
+
+<mat-menu x-position="before" #menu="matMenu">
+  <button mat-menu-item routerLink="/map">
+    <mat-icon>map</mat-icon> Carte
+  </button>
+  <button mat-menu-item routerLink="/apartments">
+    <mat-icon>info</mat-icon> Appartements
+  </button>
+  <button mat-menu-item routerLink="/form" disabled>
+    <mat-icon>list</mat-icon> Formulaire
+  </button>
+  <button mat-menu-item routerLink="/login" *ngIf="!isAuthenticated">
+    <mat-icon>power_settings_new</mat-icon> Login
+  </button>
+  <button mat-menu-item *ngIf="isAuthenticated" (click)="logout()">
+    <mat-icon>exit_to_app</mat-icon> Logout
+  </button>
+</mat-menu>
