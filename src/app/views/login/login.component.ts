@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { IUser } from '@core/interfaces';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -8,10 +10,7 @@ import { Component } from '@angular/core';
 export class LoginComponent {
   public hide: boolean = true;
   public loginValid = true;
-  public userData: {
-    name: string;
-    password: string;
-  };
+  public userData: IUser;
 
   constructor( ) {
     this.userData = {

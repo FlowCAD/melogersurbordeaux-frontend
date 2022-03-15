@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AuthService } from '@core/auth.service';
+
+import { IUser } from '@core/interfaces';
 
 @Component({
   selector: 'app-register',
@@ -8,12 +11,11 @@ import { Component } from '@angular/core';
 export class RegisterComponent {
   public hide: boolean = true;
   public loginValid = true;
-  public userData: {
-    name: string;
-    password: string;
-  };
+  public userData: IUser;
 
-  constructor() {
+  constructor(
+    private _auth: AuthService
+  ) {
     this.userData = {
       name: '',
       password: ''
@@ -23,7 +25,11 @@ export class RegisterComponent {
   public onSubmit(): void {
     this.loginValid = true;
 
-    console.log('info:', this.userData);
+    this._auth.registerUser(this.userData)
+      .subscribe(
+        res => console.log('res: ', res),
+        err => console.error('err: ', err)
+      )
   }
 
 }
