@@ -7,13 +7,17 @@ import { IUser } from '@core/interfaces';
   providedIn: 'root'
 })
 export class AuthService {
-  private _registerUrl = "http://localhost:3000/register";
+  private readonly _serverUrl = "http://localhost:3000/";
 
   constructor(
     private http: HttpClient
   ) { }
 
   public registerUser(user: IUser) {
-    return this.http.post<any>(this._registerUrl, user);
+    return this.http.post(`${this._serverUrl}register`, user);
+  }
+
+  public loginUser(user: IUser) {
+    return this.http.post(`${this._serverUrl}login`, user);
   }
 }

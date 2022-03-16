@@ -13,8 +13,9 @@ import { environment } from '../environments/environment';
 import { MaterialModule } from './material.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
-import { AuthService } from '@core/auth.service';
-import { TopbarComponent } from '@core/topbar/topbar.component';
+import { AuthService } from '@core/services/auth.service';
+import { ApartService } from '@core/services/apart.service';
+import { TopbarComponent } from '@core/components/topbar/topbar.component';
 
 import { ApartmentComponent } from '@views/apartment/apartment.component';
 import { FormComponent } from '@views/form/form.component';
@@ -50,7 +51,10 @@ import { RegisterComponent } from '@views/register/register.component';
     MaterialModule,
     LeafletModule,
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    ApartService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

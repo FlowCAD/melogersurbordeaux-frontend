@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '@core/services/auth.service';
 
 import { IUser } from '@core/interfaces';
 
@@ -12,7 +13,9 @@ export class LoginComponent {
   public loginValid = true;
   public userData: IUser;
 
-  constructor( ) {
+  constructor(
+    private _auth: AuthService
+  ) {
     this.userData = {
       name: '',
       password: ''
@@ -20,8 +23,16 @@ export class LoginComponent {
   }
 
   public onSubmit(): void {
-    this.loginValid = true;
-
-    console.log('info:', this.userData);
+    this._auth.loginUser(this.userData)
+      .subscribe(
+        res => {
+          console.log('res: ', res);
+          this.loginValid = true;
+        },
+        err => {
+          console.error('err: ', err);
+          this.loginValid = false;
+        }
+      )
   }
 }
