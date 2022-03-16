@@ -4,6 +4,10 @@ import { Observable } from 'rxjs';
 
 import { IUser } from '@core/interfaces';
 
+interface IJwt {
+  token: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,11 +18,15 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  public registerUser(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(`${this._serverUrl}/register`, user);
+  public registerUser(user: IUser): Observable<IJwt> {
+    return this.http.post<IJwt>(`${this._serverUrl}/register`, user);
   }
 
-  public loginUser(user: IUser): Observable<IUser> {
-    return this.http.post<IUser>(`${this._serverUrl}/login`, user);
+  public loginUser(user: IUser): Observable<IJwt> {
+    return this.http.post<IJwt>(`${this._serverUrl}/login`, user);
+  }
+
+  public loggedIn(): boolean {
+    return !!localStorage.getItem('token');
   }
 }

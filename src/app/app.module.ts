@@ -6,16 +6,19 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from '@core/app-routing.module';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 
 import { MaterialModule } from './material.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
+import { AuthGuard } from '@core/auth.guard';
+
+import { TopbarComponent } from '@core/components/topbar/topbar.component';
 import { AuthService } from '@core/services/auth.service';
 import { ApartService } from '@core/services/apart.service';
-import { TopbarComponent } from '@core/components/topbar/topbar.component';
+import { TokenInterceptorService } from '@core/services/token-interceptor.service'
 
 import { ApartmentComponent } from '@views/apartment/apartment.component';
 import { FormComponent } from '@views/form/form.component';
@@ -52,8 +55,10 @@ import { RegisterComponent } from '@views/register/register.component';
     LeafletModule,
   ],
   providers: [
+    AuthGuard,
     AuthService,
     ApartService,
+    TokenInterceptorService,
   ],
   bootstrap: [AppComponent]
 })
