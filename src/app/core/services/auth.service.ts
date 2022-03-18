@@ -29,4 +29,8 @@ export class AuthService {
   public loggedIn(): boolean {
     return !!localStorage.getItem('token');
   }
+
+  public getToken(): string | null {
+    return localStorage.getItem('token');
+  }
 }
