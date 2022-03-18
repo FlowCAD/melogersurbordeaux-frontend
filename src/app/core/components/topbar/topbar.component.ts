@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthService } from '@core/services/auth.service';
+
 @Component({
   selector: 'app-topbar',
   templateUrl: './topbar.component.html',
@@ -7,15 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopbarComponent implements OnInit {
   public title: string = "Meloger.com";
-  public isAuthenticated: boolean = false;
 
-  constructor() { }
+  constructor(
+    public auth: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
 
   public logout(): void {
-    // TODO
+    this.auth.logoutUser();
   }
 
 }
