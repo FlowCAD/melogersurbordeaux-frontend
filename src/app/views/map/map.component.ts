@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON } from 'leaflet';
-import * as cryptoJS from 'crypto-js';
 
 import { MapService } from '@core/services/map.service';
+import { CryptoService } from '@core/services/crypto.service';
 
 @Component({
   selector: 'app-map',
@@ -26,7 +26,8 @@ export class MapComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private _mapService: MapService
+    private _mapService: MapService,
+    private _crypto: CryptoService
   ) {
     this.lat = 44.8454;
     this.lng = -0.5698;
@@ -69,7 +70,7 @@ export class MapComponent implements OnInit {
     this._mapService._getApiKey()
       .subscribe(
         (res: any) => {
-          let key = cryptoJS.AES.decrypt(res, 'myGreatPass').toString(cryptoJS.enc.Utf8);
+          let key = this._crypto.decrypt(res);
           console.log('key: ', key);
         },
         err => console.error(err)

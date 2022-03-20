@@ -18,6 +18,7 @@ import { AuthGuard } from '@core/auth.guard';
 import { TopbarComponent } from '@core/components/topbar/topbar.component';
 import { AuthService } from '@core/services/auth.service';
 import { ApartService } from '@core/services/apart.service';
+import { CryptoService } from '@core/services/crypto.service';
 import { MapService } from '@core/services/map.service';
 import { TokenInterceptorService } from '@core/services/token-interceptor.service'
 
@@ -59,6 +60,7 @@ import { RegisterComponent } from '@views/register/register.component';
     AuthGuard,
     AuthService,
     ApartService,
+    CryptoService,
     MapService,
     {
       provide: HTTP_INTERCEPTORS,

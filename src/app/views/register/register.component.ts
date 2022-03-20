@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthService } from '@core/services/auth.service';
+import { CryptoService } from '@core/services/crypto.service';
 
 import { IUser } from '@core/interfaces';
 
@@ -11,12 +13,12 @@ import { IUser } from '@core/interfaces';
 })
 export class RegisterComponent {
   public hide: boolean = true;
-  public loginValid = true;
   public userData: IUser;
 
   constructor(
     private _router: Router,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _crypto: CryptoService
   ) {
     this.userData = {
       name: '',
@@ -25,12 +27,11 @@ export class RegisterComponent {
   }
 
   public onSubmit(): void {
-    this.loginValid = true;
+    this.userData.password = this._crypto.encrypt(this.userData.password);
 
     this._auth.registerUser(this.userData)
       .subscribe(
         res => {
-          console.log('res: ', res);
           localStorage.setItem('token', res.token);
           this._router.navigate(['/apartments']);
         },

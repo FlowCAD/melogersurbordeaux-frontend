@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AuthService } from '@core/services/auth.service';
+import { CryptoService } from '@core/services/crypto.service';
 
 import { IUser } from '@core/interfaces';
 
@@ -16,7 +18,8 @@ export class LoginComponent {
 
   constructor(
     private _router: Router,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private _crypto: CryptoService
   ) {
     this.userData = {
       name: '',
@@ -25,10 +28,11 @@ export class LoginComponent {
   }
 
   public onSubmit(): void {
+    this.userData.password = this._crypto.encrypt(this.userData.password);
+
     this._auth.loginUser(this.userData)
       .subscribe(
         res => {
-          console.log('res: ', res);
           this.loginValid = true;
           localStorage.setItem('token', res.token);
           this._router.navigate(['/apartments']);
