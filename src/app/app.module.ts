@@ -18,6 +18,7 @@ import { AuthGuard } from '@core/auth.guard';
 import { TopbarComponent } from '@core/components/topbar/topbar.component';
 import { AuthService } from '@core/services/auth.service';
 import { ApartService } from '@core/services/apart.service';
+import { MapService } from '@core/services/map.service';
 import { TokenInterceptorService } from '@core/services/token-interceptor.service'
 
 import { ApartmentComponent } from '@views/apartment/apartment.component';
@@ -58,6 +59,7 @@ import { RegisterComponent } from '@views/register/register.component';
     AuthGuard,
     AuthService,
     ApartService,
+    MapService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
