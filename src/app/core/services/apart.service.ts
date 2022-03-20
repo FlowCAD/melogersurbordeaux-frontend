@@ -19,7 +19,27 @@ export class ApartService {
     this._serverUrl = this.env.apiUrl;
   }
 
-  public getApart(): Observable<IApart[]> {
+  public getApartList(): Observable<IApart[]> {
     return this.http.get<IApart[]>(`${this._serverUrl}/appart`);
+  }
+
+  public addApart(apart: IApart): Observable<IApart> {
+    return this.http.post<IApart>(`${this._serverUrl}/appart`, apart);
+  }
+
+  public getApart(name: string): Observable<IApart> {
+    return this.http.get<IApart>(`${this._serverUrl}/appart/${name}`);
+  }
+
+  public updateApart(name: string, apart: IApart): Observable<IApart> {
+    return this.http.patch<IApart>(`${this._serverUrl}/appart/${name}`, apart);
+  }
+
+  public addCommentOnApart(name: string, comment: string): Observable<IApart> {
+    return this.http.post<IApart>(`${this._serverUrl}/appart/${name}`, comment);
+  }
+
+  public deleteApart(name: string): Observable<IApart> {
+    return this.http.delete<IApart>(`${this._serverUrl}/appart/${name}`);
   }
 }

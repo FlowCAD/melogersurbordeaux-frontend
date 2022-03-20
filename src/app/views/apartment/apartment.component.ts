@@ -28,15 +28,15 @@ export class ApartmentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._getApart();
+    this._getApartList();
   }
 
   public onClick(appart: IApart) {
-    console.log(appart);
+    this._router.navigate([`/apartments/${appart.name}`]);
   }
 
-  private _getApart(): void {
-    this._apartService.getApart()
+  private _getApartList(): void {
+    this._apartService.getApartList()
       .subscribe(
         res => {
           this.apartments = res;

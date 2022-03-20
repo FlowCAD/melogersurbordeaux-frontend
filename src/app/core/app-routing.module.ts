@@ -20,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'apartments/:pk',
-    component: ApartmentComponent,
+    component: FormComponent,
     data: {title: 'Appartement'},
     canActivate: [AuthGuard]
   },
