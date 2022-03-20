@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 import { IUser } from '@core/interfaces';
 
 interface IJwt {
@@ -13,12 +15,15 @@ interface IJwt {
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly _serverUrl = "http://localhost:3000";
+  private readonly env = environment;
+  private _serverUrl: string;
 
   constructor(
     private http: HttpClient,
     private _router: Router
-  ) { }
+  ) {
+    this._serverUrl = this.env.apiUrl;
+  }
 
   public registerUser(user: IUser): Observable<IJwt> {
     return this.http.post<IJwt>(`${this._serverUrl}/register`, user);
