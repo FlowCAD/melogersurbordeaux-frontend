@@ -1,5 +1,9 @@
+
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AuthService } from '@core/services/auth.service';
 import { CryptoService } from '@core/services/crypto.service';
@@ -19,7 +23,8 @@ export class LoginComponent {
   constructor(
     private _router: Router,
     private _auth: AuthService,
-    private _crypto: CryptoService
+    private _crypto: CryptoService,
+    private _snackBar: MatSnackBar
   ) {
     this.userData = {
       name: '',
@@ -38,8 +43,13 @@ export class LoginComponent {
           this._router.navigate(['/apartments']);
         },
         err => {
-          console.error('err: ', err);
+          this.userData.password = '';
           this.loginValid = false;
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 401) {
+              this._snackBar.open('Identifiant et/ou Mot de passe invalides.', 'OK')
+            }
+          }
         }
       )
   }
