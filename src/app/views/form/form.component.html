@@ -1,7 +1,22 @@
 <mat-card *ngIf="!loading">
   <form #apartForm="ngForm" class="form" (ngSubmit)="save()">
     <mat-card-title>Appartement: {{apart?.name}}</mat-card-title>
-    <br>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" type="button"
+              *ngIf="mode === 'normal'"
+              (click)="edit()">
+        Éditer
+      </button>
+      <button mat-raised-button color="primary" type="button"
+              *ngIf="mode === 'edition'"
+              (click)="cancel()">
+        Annuler
+      </button>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!apartForm.form.valid" *ngIf="['creation', 'edition'].includes(mode)">
+        Enregistrer
+      </button>
+    </mat-card-actions>
     <mat-card-content>
       <table class="full-width" cellspacing="0">
         <tr>
@@ -50,21 +65,22 @@
           <td colspan="2">
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Latitude</mat-label>
-              <input matInput type="number" placeholder="44. ..." [(ngModel)]="apart.lat" name="lat" />
+              <input matInput type="number" placeholder="44. ..."
+                     [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.lat" name="lat" />
             </mat-form-field>
           </td>
           <td colspan="2">
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Longitude</mat-label>
-              <input matInput type="number" placeholder="1. ..." [(ngModel)]="apart.lon" name="lon" />
+              <input matInput type="number" placeholder="1. ..."
+                     [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.lon" name="lon" />
             </mat-form-field>
           </td>
         </tr>
       </table>
     </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!apartForm.form.valid">Enregistrer</button>
-    </mat-card-actions>
     <mat-card-footer>
       <i style="color: lightgray;">{{apart._id}}</i>
     </mat-card-footer>

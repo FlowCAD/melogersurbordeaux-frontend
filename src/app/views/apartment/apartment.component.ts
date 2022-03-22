@@ -15,6 +15,7 @@ import { IApart } from '@core/interfaces';
 })
 export class ApartmentComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
+  public loading: boolean;
   public dataSource: MatTableDataSource<IApart>;
   public apartments: IApart[];
   public columnsToDisplay = ['name', 'description', 'comments'];
@@ -23,6 +24,7 @@ export class ApartmentComponent implements OnInit {
     private _router: Router,
     private _apartService: ApartService
   ) {
+    this.loading = false;
     this.apartments = [];
     this.dataSource = new MatTableDataSource(this.apartments);
   }
@@ -36,12 +38,15 @@ export class ApartmentComponent implements OnInit {
   }
 
   private _getApartList(): void {
+    this.loading = true;
+
     this._apartService.getApartList()
       .subscribe(
         res => {
           this.apartments = res;
           this.dataSource.data = this.apartments;
           this.dataSource.sort = this.sort;
+          this.loading = false;
         },
         err => {
           if (err instanceof HttpErrorResponse) {

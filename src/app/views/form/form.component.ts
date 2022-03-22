@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ApartService } from '@core/services/apart.service';
-import { IApart } from '@core/interfaces';
+import { IApart, Apart } from '@core/interfaces';
 
 @Component({
   selector: 'app-form',
@@ -11,32 +11,48 @@ import { IApart } from '@core/interfaces';
   styleUrls: ['./form.component.css']
 })
 export class FormComponent implements OnInit {
-  public loading: boolean;
-  public apart!: IApart;
+  public pk: string = '';
+  public loading: boolean = false;
+  public mode: 'creation' | 'edition' | 'normal' = 'normal';
+  public apart!: Apart;
+  private apartBackup!: Apart;
 
   constructor(
+    private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _apartService: ApartService
-  ) {
-    this.loading = false;
-  }
+  ) {}
 
   ngOnInit(): void {
-    this._getApart();
+    this.pk = this._activatedRoute.snapshot.paramMap.get("pk") || 'new';
+    if (this.pk === 'new') {
+      this.mode = 'creation';
+      this.apart = new Apart();
+    } else {
+      this._getApart();
+    }
+  }
+
+  public edit() {
+    this.apartBackup = {...this.apart};
+    this.mode = 'edition';
+  }
+
+  public cancel() {
+    this.apart = {...this.apartBackup};
+    this.mode = 'normal';
   }
 
   public save() {
-    console.log('appart: ', this.apart);
+    this.mode = 'normal';
   }
 
   private _getApart(): void {
     this.loading = true;
-    const name = this._router.url.replace('/apartments/','');
 
-    this._apartService.getApart(name)
+    this._apartService.getApart(this.pk)
       .subscribe(
-        (res: IApart) => {
-          console.log(res);
+        (res: Apart) => {
           this.apart = res;
           this.loading = false;
         },

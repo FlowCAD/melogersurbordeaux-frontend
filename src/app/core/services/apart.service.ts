@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { IApart } from '@core/interfaces';
+import { IApart, Apart } from '@core/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +27,8 @@ export class ApartService {
     return this.http.post<IApart>(`${this._serverUrl}/appart`, apart);
   }
 
-  public getApart(name: string): Observable<IApart> {
-    return this.http.get<IApart>(`${this._serverUrl}/appart/${name}`);
+  public getApart(name: string): Observable<Apart> {
+    return this.http.get<Apart>(`${this._serverUrl}/appart/${name}`);
   }
 
   public updateApart(name: string, apart: IApart): Observable<IApart> {
