@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -27,6 +27,11 @@ import { FormComponent } from '@views/form/form.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
+
+/** Import French local Id */
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -62,6 +67,7 @@ import { RegisterComponent } from '@views/register/register.component';
     ApartService,
     CryptoService,
     MapService,
+    { provide: LOCALE_ID, useValue: 'fr' },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,

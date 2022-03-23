@@ -1,6 +1,6 @@
 <mat-card *ngIf="!loading">
   <form #apartForm="ngForm" class="form" (ngSubmit)="save()">
-    <mat-card-title>Appartement: {{apart?.code}}</mat-card-title>
+    <mat-card-title>{{ pk === 'new' ? 'Nouvel appartement' : apart?.code }}</mat-card-title>
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" type="button"
               *ngIf="mode === 'normal'"
@@ -82,10 +82,30 @@
             </mat-form-field>
           </td>
         </tr>
+        <tr>
+          <td colspan="4">
+            <mat-expansion-panel (opened)="commentPanelOpenState = true"
+                                 (closed)="commentPanelOpenState = false">
+              <mat-expansion-panel-header>
+                <mat-panel-title>Commentaires ({{apart.comments.length}})</mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-list dense>
+                <div *ngFor="let comment of apart.comments">
+                  <mat-divider></mat-divider>
+                  <mat-list-item>
+                    <div mat-line align="end"><i style="color: #a6a6a6">{{comment.date | date:'fullDate'}}</i></div>
+                    <div mat-line align="start" style="white-space: break-spaces; overflow: hidden;">{{comment.text}}</div>
+                  </mat-list-item>
+                </div>
+              </mat-list>
+              <mat-action-row>TODO Ajouter un commentaire</mat-action-row>
+            </mat-expansion-panel>
+          </td>
+        </tr>
       </table>
     </mat-card-content>
     <mat-card-footer>
-      <i style="color: lightgray;">{{apart._id}}</i>
+      <i style="color: lightgray">{{apart._id}}</i>
     </mat-card-footer>
   </form>
 </mat-card>

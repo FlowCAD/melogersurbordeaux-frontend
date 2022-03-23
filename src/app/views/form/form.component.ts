@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { ApartService } from '@core/services/apart.service';
 import { IApart, Apart } from '@core/interfaces';
@@ -16,6 +17,7 @@ export class FormComponent implements OnInit {
   public mode: 'creation' | 'edition' | 'normal' = 'normal';
   public apart!: Apart;
   public states: {value: string, viewValue: string}[];
+  public commentPanelOpenState: boolean = false;
   private apartBackup!: Apart;
 
   constructor(
@@ -51,7 +53,22 @@ export class FormComponent implements OnInit {
   }
 
   public save() {
-    this.mode = 'normal';
+    this.loading = true;
+    let api: Observable<IApart>;
+
+    if (this.mode === 'creation') api = this._apartService.addApart(this.apart);
+    else if (this.mode === 'edition') api = this._apartService.updateApart(this.pk, this.apart);
+    else return;
+
+    api.subscribe(
+      res => {
+        console.log(res);
+        this.mode = 'normal';
+        this.loading = false;
+      },
+      err => console.error(err)
+    )
+
   }
 
   private _getApart(): void {
