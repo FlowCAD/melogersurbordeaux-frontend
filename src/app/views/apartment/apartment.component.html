@@ -5,8 +5,12 @@
   </mat-card-actions>
   <mat-card-content>
     <table mat-table [dataSource]="dataSource" matSort>
-      <ng-container matColumnDef="name" sticky>
-        <th mat-header-cell *matHeaderCellDef>Appartements [{{dataSource.data.length}}]</th>
+      <ng-container matColumnDef="code" sticky>
+        <th mat-header-cell *matHeaderCellDef>Code</th>
+        <td mat-cell *matCellDef="let apart"> {{apart.code}} </td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nom</th>
         <td mat-cell *matCellDef="let apart"> {{apart.name}} </td>
       </ng-container>
       <ng-container matColumnDef="description">

@@ -18,7 +18,7 @@ export class ApartmentComponent implements OnInit {
   public loading: boolean;
   public dataSource: MatTableDataSource<IApart>;
   public apartments: IApart[];
-  public columnsToDisplay = ['name', 'description', 'comments'];
+  public columnsToDisplay = ['code', 'name', 'description', 'comments'];
 
   constructor(
     private _router: Router,
@@ -34,7 +34,7 @@ export class ApartmentComponent implements OnInit {
   }
 
   public onClick(appart: IApart) {
-    this._router.navigate([`/apartments/${appart.name}`]);
+    this._router.navigate([`/apartments/${appart.code}`]);
   }
 
   private _getApartList(): void {

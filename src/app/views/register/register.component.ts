@@ -33,6 +33,7 @@ export class RegisterComponent {
       .subscribe(
         res => {
           localStorage.setItem('token', res.token);
+          localStorage.setItem('userName', this.userData.name);
           this._router.navigate(['/apartments']);
         },
         err => console.error('err: ', err)

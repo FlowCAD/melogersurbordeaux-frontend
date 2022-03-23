@@ -1,5 +1,6 @@
 export interface IApart {
   _id: string;
+  code?: string;
   name: string;
   description: string;
   image: string;
@@ -15,6 +16,7 @@ interface IComment {
 
 export class Apart {
   public _id: string;
+  public code?: string;
   public name: string;
   public description: string;
   public image: string;

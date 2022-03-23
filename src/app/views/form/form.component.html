@@ -1,6 +1,6 @@
 <mat-card *ngIf="!loading">
   <form #apartForm="ngForm" class="form" (ngSubmit)="save()">
-    <mat-card-title>Appartement: {{apart?.name}}</mat-card-title>
+    <mat-card-title>Appartement: {{apart?.code}}</mat-card-title>
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" type="button"
               *ngIf="mode === 'normal'"
@@ -23,13 +23,13 @@
           <td>
             <mat-form-field class="full-width" appearance="outline">
               <mat-label>Nom</mat-label>
-              <input matInput placeholder="T2 Saint Seurin..." [(ngModel)]="apart.name" name="name" disabled />
+              <input matInput [(ngModel)]="apart.code" name="code" disabled />
             </mat-form-field>
           </td>
           <td>
             <mat-form-field class="full-width" appearance="outline">
-              <mat-label>Address</mat-label>
-              <input matInput placeholder="T2 Saint Seurin..." [(ngModel)]="apart.name" name="name1" required />
+              <mat-label>Nom</mat-label>
+              <input matInput placeholder="T2 Saint Seurin..." [(ngModel)]="apart.name" name="name" required />
               <mat-error>Nom requis.</mat-error>
             </mat-form-field>
           </td>
