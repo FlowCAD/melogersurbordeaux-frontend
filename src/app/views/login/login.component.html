@@ -4,11 +4,13 @@
       <mat-card-title>Connexion</mat-card-title>
       <mat-error *ngIf="!loginValid">Le nom et/ou le mot de passe n'ont pas été reconnu.</mat-error>
       <mat-form-field>
-        <input matInput placeholder="Nom" [(ngModel)]="userData.name" name="name" required>
+        <mat-label>Nom</mat-label>
+        <input matInput placeholder="Harry" [(ngModel)]="userData.name" name="name" required>
         <mat-error>Nom incorrect.</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Mot de passe" [(ngModel)]="userData.password" name="password" required>
+        <mat-label>Mot de passe</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" placeholder="Le mot de passe..." [(ngModel)]="userData.password" name="password" required>
         <button mat-icon-button matSuffix type="button" (click)="hide = !hide" [attr.aria-pressed]="hide">
           <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>

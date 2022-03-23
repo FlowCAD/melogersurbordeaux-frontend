@@ -21,40 +21,43 @@
       <table class="full-width" cellspacing="0">
         <tr>
           <td>
-            <mat-form-field class="full-width" appearance="outline">
-              <mat-label>Nom</mat-label>
+            <mat-form-field class="full-width">
+              <mat-label>Code</mat-label>
               <input matInput [(ngModel)]="apart.code" name="code" disabled />
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width">
               <mat-label>Nom</mat-label>
               <input matInput placeholder="T2 Saint Seurin..." [(ngModel)]="apart.name" name="name" required />
               <mat-error>Nom requis.</mat-error>
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="full-width" appearance="outline">
-              <mat-label>Address 2</mat-label>
-              <input matInput/>
+            <mat-form-field class="full-width">
+              <mat-label>Prix</mat-label>
+              <input matInput type="number" placeholder="0" [(ngModel)]="apart.price" name="price" required>
+              <span matSuffix>&nbsp;€</span>
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="full-width" appearance="outline">
-              <mat-label>Address 3</mat-label>
-              <input matInput/>
+            <mat-form-field class="full-width">
+              <mat-label>Status</mat-label>
+              <mat-select [(ngModel)]="apart.state" name="state" required>
+                <mat-option *ngFor="let state of states" [value]="state.value">{{state.viewValue}}</mat-option>
+              </mat-select>
             </mat-form-field>
           </td>
         </tr>
         <tr>
           <td colspan="3">
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width">
               <mat-label>Description</mat-label>
               <textarea matInput placeholder="Quelques mots sur l'appartement..." [(ngModel)]="apart.description" name="description"></textarea>
             </mat-form-field>
           </td>
           <td>
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width">
               <mat-label>Commentaire</mat-label>
               <input matInput [ngModel]="apart.comments[0]?.text" name="comment"
                               (ngModelChange)="apart.comments[0].text = $event"/>
@@ -63,7 +66,7 @@
         </tr>
         <tr>
           <td colspan="2">
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width">
               <mat-label>Latitude</mat-label>
               <input matInput type="number" placeholder="44. ..."
                      [disabled]="mode === 'normal'"
@@ -71,7 +74,7 @@
             </mat-form-field>
           </td>
           <td colspan="2">
-            <mat-form-field class="full-width" appearance="outline">
+            <mat-form-field class="full-width">
               <mat-label>Longitude</mat-label>
               <input matInput type="number" placeholder="1. ..."
                      [disabled]="mode === 'normal'"

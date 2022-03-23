@@ -2,6 +2,8 @@ export interface IApart {
   _id: string;
   code?: string;
   name: string;
+  price: number;
+  state: string;
   description: string;
   image: string;
   comments: IComment[];
@@ -18,6 +20,8 @@ export class Apart {
   public _id: string;
   public code?: string;
   public name: string;
+  public price: number;
+  public state: string;
   public description: string;
   public image: string;
   public comments: IComment[];
@@ -27,6 +31,8 @@ export class Apart {
   constructor() {
     this._id = '';
     this.name = '';
+    this.price = 0;
+    this.state = 'new';
     this.description = '';
     this.image = '';
     this.comments = [];

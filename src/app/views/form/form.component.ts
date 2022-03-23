@@ -15,13 +15,20 @@ export class FormComponent implements OnInit {
   public loading: boolean = false;
   public mode: 'creation' | 'edition' | 'normal' = 'normal';
   public apart!: Apart;
+  public states: {value: string, viewValue: string}[];
   private apartBackup!: Apart;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _apartService: ApartService
-  ) {}
+  ) {
+    this.states = [
+      {value: 'new', viewValue: 'Nouveau'},
+      {value: 'accepted', viewValue: 'A visiter'},
+      {value: 'refused', viewValue: 'Refusé'}
+    ];
+  }
 
   ngOnInit(): void {
     this.pk = this._activatedRoute.snapshot.paramMap.get("pk") || 'new';
