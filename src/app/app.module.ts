@@ -24,6 +24,7 @@ import { TokenInterceptorService } from '@core/services/token-interceptor.servic
 
 import { ApartmentComponent } from '@views/apartment/apartment.component';
 import { FormComponent } from '@views/form/form.component';
+import { formCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
@@ -41,6 +42,7 @@ registerLocaleData(localeFr, 'fr');
     // Views
     ApartmentComponent,
     FormComponent,
+    formCommentDialogComponent,
     LoginComponent,
     MapComponent,
     RegisterComponent,

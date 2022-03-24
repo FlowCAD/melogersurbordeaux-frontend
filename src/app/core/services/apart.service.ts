@@ -36,7 +36,7 @@ export class ApartService {
   }
 
   public addCommentOnApart(code: string, comment: string): Observable<IApart> {
-    return this.http.post<IApart>(`${this._serverUrl}/appart/${code}`, comment);
+    return this.http.post<IApart>(`${this._serverUrl}/appart/${code}`, { comment });
   }
 
   public deleteApart(code: string): Observable<IApart> {

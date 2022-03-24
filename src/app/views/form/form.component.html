@@ -56,13 +56,7 @@
               <textarea matInput placeholder="Quelques mots sur l'appartement..." [(ngModel)]="apart.description" name="description"></textarea>
             </mat-form-field>
           </td>
-          <td>
-            <mat-form-field class="full-width">
-              <mat-label>Commentaire</mat-label>
-              <input matInput [ngModel]="apart.comments[0]?.text" name="comment"
-                              (ngModelChange)="apart.comments[0].text = $event"/>
-            </mat-form-field>
-          </td>
+          <td></td>
         </tr>
         <tr>
           <td colspan="2">
@@ -89,16 +83,27 @@
               <mat-expansion-panel-header>
                 <mat-panel-title>Commentaires ({{apart.comments.length}})</mat-panel-title>
               </mat-expansion-panel-header>
-              <mat-list dense>
+              <mat-list>
                 <div *ngFor="let comment of apart.comments">
                   <mat-divider></mat-divider>
-                  <mat-list-item>
-                    <div mat-line align="end"><i style="color: #a6a6a6">{{comment.date | date:'fullDate'}}</i></div>
-                    <div mat-line align="start" style="white-space: break-spaces; overflow: hidden;">{{comment.text}}</div>
+                  <mat-list-item style="height: auto;">
+                    <div style="margin: 10px 0;">
+                      <div mat-line align="start">
+                        <i style="color: #a6a6a6; margin-right: 5px;">{{comment.date | date:'medium'}}</i>
+                      </div>
+                      <div mat-line align="start" style="white-space: pre-wrap;">
+                        <div>{{comment.text}}</div>
+                      </div>
+                    </div>
                   </mat-list-item>
                 </div>
               </mat-list>
-              <mat-action-row>TODO Ajouter un commentaire</mat-action-row>
+              <mat-action-row>
+                <button mat-raised-button color="accent" type="button"
+                        [disabled]="mode !== 'normal'" (click)="addComment()">
+                  Ajouter un commentaire
+                </button>
+              </mat-action-row>
             </mat-expansion-panel>
           </td>
         </tr>

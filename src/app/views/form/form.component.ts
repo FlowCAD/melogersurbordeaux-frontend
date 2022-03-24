@@ -1,10 +1,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
 import { ApartService } from '@core/services/apart.service';
 import { IApart, Apart } from '@core/interfaces';
+import { formCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 
 @Component({
   selector: 'app-form',
@@ -21,9 +24,11 @@ export class FormComponent implements OnInit {
   private apartBackup!: Apart;
 
   constructor(
+    public dialog: MatDialog,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    private _apartService: ApartService
+    private _apartService: ApartService,
+    private _snackBar: MatSnackBar
   ) {
     this.states = [
       {value: 'new', viewValue: 'Nouveau'},
@@ -63,6 +68,7 @@ export class FormComponent implements OnInit {
     api.subscribe(
       res => {
         console.log(res);
+        this._snackBar.open('Sauvegarde effectuée', 'OK');
         this.mode = 'normal';
         this.loading = false;
       },
@@ -71,23 +77,33 @@ export class FormComponent implements OnInit {
 
   }
 
+  public addComment() {
+    const dialogRef = this.dialog.open(formCommentDialogComponent, { width: '400px', data: {appartCode: this.pk} });
+
+    dialogRef.afterClosed().subscribe(
+      (appart: Apart) => {
+        if (appart) this.apart = appart
+      },
+      err => console.error(err)
+    );
+  }
+
   private _getApart(): void {
     this.loading = true;
 
-    this._apartService.getApart(this.pk)
-      .subscribe(
-        (res: Apart) => {
-          this.apart = res;
-          this.loading = false;
-        },
-        err => {
-          if (err instanceof HttpErrorResponse) {
-            if (err.status === 401) {
-              this._router.navigate(['/login']);
-            }
+    this._apartService.getApart(this.pk).subscribe(
+      (res: Apart) => {
+        this.apart = res;
+        this.loading = false;
+      },
+      err => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 401) {
+            this._router.navigate(['/login']);
           }
         }
-      )
+      }
+    )
   }
 
 }

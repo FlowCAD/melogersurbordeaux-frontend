@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Nouveau commentaire</h1>
+<div mat-dialog-content>
+  <mat-form-field class="full-width">
+    <mat-label>Commentaire</mat-label>
+    <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"
+              matInput cdkFocusInitial placeholder="Quelques mots sur l'appartement..."
+              [(ngModel)]="comment" name="comment" required></textarea>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button (click)="saveComment()" [disabled]="!comment">Commenter</button>
+</div>

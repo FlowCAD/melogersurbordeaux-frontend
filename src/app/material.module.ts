@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { TextFieldModule } from '@angular/cdk/text-field';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -21,9 +24,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 @NgModule({
   declarations: [],
   imports: [
+    TextFieldModule,
     CommonModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
@@ -38,8 +43,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatToolbarModule,
   ],
   exports: [
+    TextFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
