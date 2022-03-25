@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { IApart, Apart } from '@core/interfaces';
+import { IApart, Apart, IComment } from '@core/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -35,8 +35,8 @@ export class ApartService {
     return this.http.patch<IApart>(`${this._serverUrl}/appart/${code}`, apart);
   }
 
-  public addCommentOnApart(code: string, comment: string): Observable<IApart> {
-    return this.http.post<IApart>(`${this._serverUrl}/appart/${code}`, { comment });
+  public addCommentOnApart(code: string, comment: IComment): Observable<IApart> {
+    return this.http.post<IApart>(`${this._serverUrl}/appart/${code}`, comment);
   }
 
   public deleteApart(code: string): Observable<IApart> {

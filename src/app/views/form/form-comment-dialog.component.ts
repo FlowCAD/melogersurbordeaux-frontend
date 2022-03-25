@@ -21,7 +21,11 @@ export class formCommentDialogComponent {
   ) { }
 
   public saveComment() {
-    this._apartService.addCommentOnApart(this.data.appartCode, this.comment).subscribe(
+    const payload = {
+      text: this.comment,
+      author: localStorage.getItem('userName') || 'admin'
+    }
+    this._apartService.addCommentOnApart(this.data.appartCode, payload).subscribe(
       (appart: Apart) => {
         this._snackBar.open('Commentaire ajouté', 'OK');
         this.dialogRef.close(appart);

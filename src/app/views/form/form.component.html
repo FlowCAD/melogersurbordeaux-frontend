@@ -89,7 +89,7 @@
                   <mat-list-item style="height: auto;">
                     <div style="margin: 10px 0;">
                       <div mat-line align="start">
-                        <i style="color: #a6a6a6; margin-right: 5px;">{{comment.date | date:'medium'}}</i>
+                        <i style="color: #a6a6a6; margin-right: 5px;">{{comment.author ? comment.author + ' - ' : ''}} {{comment.date | date:'medium'}}</i>
                       </div>
                       <div mat-line align="start" style="white-space: pre-wrap;">
                         <div>{{comment.text}}</div>

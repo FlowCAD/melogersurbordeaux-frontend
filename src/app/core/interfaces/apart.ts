@@ -11,9 +11,10 @@ export interface IApart {
   lon: number;
 }
 
-interface IComment {
+export interface IComment {
   text: string;
-  date: string;
+  author: string;
+  date?: string;
 }
 
 export class Apart {
