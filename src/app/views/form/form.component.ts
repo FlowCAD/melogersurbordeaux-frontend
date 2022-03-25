@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +26,7 @@ export class FormComponent implements OnInit {
 
   constructor(
     public dialog: MatDialog,
+    private _datePipe: DatePipe,
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _apartService: ApartService,
@@ -61,20 +63,33 @@ export class FormComponent implements OnInit {
     this.loading = true;
     let api: Observable<IApart>;
 
-    if (this.mode === 'creation') api = this._apartService.addApart(this.apart);
-    else if (this.mode === 'edition') api = this._apartService.updateApart(this.pk, this.apart);
+    if (this.mode === 'creation') {
+      this.apart = {...this.apart, createdBy: localStorage.getItem('userName') || 'admin'};
+      api = this._apartService.addApart(this.apart);
+    } else if (this.mode === 'edition') api = this._apartService.updateApart(this.pk, this.apart);
     else return;
 
     api.subscribe(
       res => {
-        console.log(res);
         this._snackBar.open('Sauvegarde effectuée', 'OK');
+        if (this.mode === 'creation') {
+          this.pk = res.code || 'new';
+          this._router.navigateByUrl(`/apartments/${res.code}`);
+        }
         this.mode = 'normal';
         this.loading = false;
       },
       err => console.error(err)
     )
 
+  }
+
+  public getFooterText(): string {
+    const id = this.apart._id;
+    const createdAt = this._datePipe.transform(this.apart.createdAt,'dd/MM/yyyy');;
+    const createdBy = this.apart.createdBy;
+
+    return `${id} - Créé par ${createdBy} le ${createdAt}`;
   }
 
   public addComment() {

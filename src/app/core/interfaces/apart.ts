@@ -9,6 +9,8 @@ export interface IApart {
   comments: IComment[];
   lat: number;
   lon: number;
+  createdBy?: string;
+  createdAt?: string;
 }
 
 export interface IComment {
@@ -28,6 +30,8 @@ export class Apart {
   public comments: IComment[];
   public lat: number;
   public lon: number;
+  public createdBy?: string;
+  public createdAt?: string;
 
   constructor() {
     this._id = '';

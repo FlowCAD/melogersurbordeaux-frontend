@@ -29,59 +29,62 @@
           <td>
             <mat-form-field class="full-width">
               <mat-label>Nom</mat-label>
-              <input matInput placeholder="T2 Saint Seurin..." [(ngModel)]="apart.name" name="name" required />
+              <input matInput placeholder="T2 Saint Seurin..." [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.name" name="name" required />
               <mat-error>Nom requis.</mat-error>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field class="full-width">
               <mat-label>Prix</mat-label>
-              <input matInput type="number" placeholder="0" [(ngModel)]="apart.price" name="price" required>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.price" name="price" required>
               <span matSuffix>&nbsp;€</span>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field class="full-width">
               <mat-label>Status</mat-label>
-              <mat-select [(ngModel)]="apart.state" name="state" required>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.state" name="state" required>
                 <mat-option *ngFor="let state of states" [value]="state.value">{{state.viewValue}}</mat-option>
               </mat-select>
             </mat-form-field>
           </td>
         </tr>
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <mat-form-field class="full-width">
               <mat-label>Description</mat-label>
-              <textarea matInput placeholder="Quelques mots sur l'appartement..." [(ngModel)]="apart.description" name="description"></textarea>
+              <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4"
+                        matInput placeholder="Quelques mots sur l'appartement..." [disabled]="mode === 'normal'"
+                        [(ngModel)]="apart.description" name="description"></textarea>
             </mat-form-field>
           </td>
-          <td></td>
         </tr>
         <tr>
-          <td colspan="2">
+          <td></td>
+          <td>
             <mat-form-field class="full-width">
               <mat-label>Latitude</mat-label>
-              <input matInput type="number" placeholder="44. ..."
-                     [disabled]="mode === 'normal'"
+              <input matInput type="number" placeholder="44. ..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.lat" name="lat" />
             </mat-form-field>
           </td>
-          <td colspan="2">
+          <td>
             <mat-form-field class="full-width">
               <mat-label>Longitude</mat-label>
-              <input matInput type="number" placeholder="1. ..."
-                     [disabled]="mode === 'normal'"
+              <input matInput type="number" placeholder="1. ..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.lon" name="lon" />
             </mat-form-field>
           </td>
+          <td></td>
         </tr>
         <tr>
           <td colspan="4">
             <mat-expansion-panel (opened)="commentPanelOpenState = true"
                                  (closed)="commentPanelOpenState = false">
               <mat-expansion-panel-header>
-                <mat-panel-title>Commentaires ({{apart.comments.length}})</mat-panel-title>
+                <mat-panel-title>Commentaires ({{apart.comments?.length}})</mat-panel-title>
               </mat-expansion-panel-header>
               <mat-list>
                 <div *ngFor="let comment of apart.comments">
@@ -110,7 +113,7 @@
       </table>
     </mat-card-content>
     <mat-card-footer>
-      <i style="color: lightgray">{{apart._id}}</i>
+      <i style="color: lightgray" *ngIf="pk !== 'new'">{{getFooterText()}}</i>
     </mat-card-footer>
   </form>
 </mat-card>

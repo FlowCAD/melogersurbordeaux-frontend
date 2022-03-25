@@ -30,7 +30,7 @@ import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
 
 /** Import French local Id */
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr, 'fr');
 
@@ -68,6 +68,7 @@ registerLocaleData(localeFr, 'fr');
     AuthService,
     ApartService,
     CryptoService,
+    DatePipe,
     MapService,
     { provide: LOCALE_ID, useValue: 'fr' },
     {
