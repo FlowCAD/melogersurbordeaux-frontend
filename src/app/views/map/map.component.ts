@@ -29,14 +29,14 @@ export class MapComponent implements OnInit {
     private _mapService: MapService,
     private _crypto: CryptoService
   ) {
-    this.lat = 44.8454;
-    this.lng = -0.5698;
+    this.lat = 44.835;
+    this.lng = -0.57;
     const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
     this.tileLayerOsm = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: osmAttribution});
     this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: osmAttribution});
     this.mapOptions = {
       layers: [ this.tileLayerOsm, this.tileLayerWiki ],
-      zoom: 13,
+      zoom: 13.5,
       minZoom: 13,
       maxZoom: 19,
       center: latLng([ this.lat, this.lng])
