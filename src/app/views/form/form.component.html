@@ -29,45 +29,90 @@
           <td>
             <mat-form-field class="full-width">
               <mat-label>Nom</mat-label>
-              <input matInput placeholder="T2 Saint Seurin..." [disabled]="mode === 'normal'"
+              <input matInput type="text" placeholder="T2 Saint Seurin..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.name" name="name" required />
               <mat-error>Nom requis.</mat-error>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field class="full-width">
-              <mat-label>Prix</mat-label>
-              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
-                     [(ngModel)]="apart.price" name="price" required>
-              <span matSuffix>&nbsp;€</span>
+              <mat-label>Lien</mat-label>
+              <input matInput placeholder="https://www.leboncoin.fr/ventes_..." [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.link" name="link" required />
+              <mat-error>Lien requis.</mat-error>
             </mat-form-field>
           </td>
           <td>
             <mat-form-field class="full-width">
               <mat-label>Status</mat-label>
-              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.state" name="state" required>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.state" name="state">
                 <mat-option *ngFor="let state of states" [value]="state.value">{{state.viewValue}}</mat-option>
               </mat-select>
             </mat-form-field>
           </td>
         </tr>
         <tr>
-          <td colspan="4">
+          <td>
             <mat-form-field class="full-width">
-              <mat-label>Description</mat-label>
-              <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="2" cdkAutosizeMaxRows="4"
-                        matInput placeholder="Quelques mots sur l'appartement..." [disabled]="mode === 'normal'"
-                        [(ngModel)]="apart.description" name="description"></textarea>
+              <mat-label>Prix</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.price" name="price" required>
+              <span matSuffix>&nbsp;€</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Prix au m&#178;</mat-label>
+              <input matInput type="number" placeholder="0" disabled
+                    [(ngModel)]="apart.priceBySurface" name="priceBySurface">
+              <span matSuffix>&nbsp;€</span>
+              <mat-hint align="end" *ngIf="['creation', 'edition'].includes(mode)">
+                Champ calculé automatiquement (requis: Prix et Surface)
+              </mat-hint>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Frais d'Agence</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.notaryFees" name="notaryFees">
+              <span matSuffix>&nbsp;€</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Frais de Notaire</mat-label>
+              <input matInput type="number" placeholder="0" disabled
+                    [(ngModel)]="apart.priceBySurface" name="priceBySurface">
+              <span matSuffix>&nbsp;€</span>
+              <mat-hint align="end" *ngIf="['creation', 'edition'].includes(mode)">
+                Champ calculé automatiquement (requis: Prix)
+              </mat-hint>
             </mat-form-field>
           </td>
         </tr>
         <tr>
-          <td></td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Quartier</mat-label>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.district" name="district">
+                <mat-option *ngFor="let val of districts" [value]="val">{{val}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Adresse postale</mat-label>
+              <input matInput type="text" placeholder="130 Rue Sainte-Catherine, 33000 Bordeaux" [disabled]="mode === 'normal'"
+                     [(ngModel)]="apart.address" name="address" />
+            </mat-form-field>
+          </td>
           <td>
             <mat-form-field class="full-width">
               <mat-label>Latitude</mat-label>
               <input matInput type="number" placeholder="44. ..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.lat" name="lat" />
+              <!-- TODO Faire un onClick show map -->
             </mat-form-field>
           </td>
           <td>
@@ -77,7 +122,116 @@
                      [(ngModel)]="apart.lon" name="lon" />
             </mat-form-field>
           </td>
-          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Surface au sol</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.surface" name="surface" required>
+              <span matSuffix>&nbsp;m&#178;</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Surface carrez</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.surfaceCarrez" name="surfaceCarrez">
+              <span matSuffix>&nbsp;m&#178;</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Extérieur</mat-label>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.exterior" name="exterior">
+                <mat-option *ngFor="let val of exteriorOptions" [value]="val">{{val}}</mat-option>
+              </mat-select>
+              <mat-hint align="end" *ngIf="['creation', 'edition'].includes(mode) && apart.exterior === 'Autre'">
+                Si Autre, merci de préciser dans la description.
+              </mat-hint>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width" *ngIf="apart.exterior && apart.exterior !== 'Aucun'">
+              <mat-label>Surface extérieur</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.surfaceExterior" name="surfaceExterior">
+              <span matSuffix>&nbsp;m&#178;</span>
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Exposition</mat-label>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.exposition" name="exposition">
+                <mat-option *ngFor="let val of expositions" [value]="val">{{val}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
+                          [(ngModel)]="apart.visAVis" name="visAVis">Vis à vis</mat-checkbox>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Étage</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.floor" name="floor">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Nombre d'étages</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.floors" name="floors">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>DPE</mat-label>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.dpe" name="dpe">
+                <mat-option *ngFor="let val of diagValues" [value]="val">{{val}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>GES</mat-label>
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.ges" name="ges">
+                <mat-option *ngFor="let val of diagValues" [value]="val">{{val}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
+                          [(ngModel)]="apart.parking" name="parking">Parking</mat-checkbox>
+          </td>
+          <td>
+            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
+                          [(ngModel)]="apart.bikeParking" name="bikeParking">Local à vélo</mat-checkbox>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Charges Annuelles</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.annualCondominiumFees" name="annualCondominiumFees">
+            </mat-form-field>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <mat-form-field class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="3" cdkAutosizeMaxRows="5"
+                        matInput placeholder="Quelques mots sur l'appartement, ce qui est contenu dans les charges ou autre..." [disabled]="mode === 'normal'"
+                        [(ngModel)]="apart.description" name="description"></textarea>
+            </mat-form-field>
+          </td>
         </tr>
         <tr>
           <td colspan="4">

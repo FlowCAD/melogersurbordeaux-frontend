@@ -5,6 +5,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -28,6 +29,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     CommonModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,
@@ -46,6 +48,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     TextFieldModule,
     MatButtonModule,
     MatCardModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatDividerModule,
     MatExpansionModule,

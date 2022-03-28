@@ -21,6 +21,10 @@ export class FormComponent implements OnInit {
   public mode: 'creation' | 'edition' | 'normal' = 'normal';
   public apart!: Apart;
   public states: {value: string, viewValue: string}[];
+  public districts: string[];
+  public exteriorOptions: string[];
+  public expositions: string[];
+  public diagValues: string[];
   public commentPanelOpenState: boolean = false;
   private apartBackup!: Apart;
 
@@ -37,6 +41,10 @@ export class FormComponent implements OnInit {
       {value: 'accepted', viewValue: 'A visiter'},
       {value: 'refused', viewValue: 'Refusé'}
     ];
+    this.districts = ['Saint Augustin', 'Saint Genès', 'La Bastide', 'Nansouty', 'Saint Paul', 'Saint Pierre', 'Chartrons', 'Autre'];
+    this.exteriorOptions = ['Terasse', 'Balcon', 'Loggia', 'Jardin', 'Autre', 'Aucun'];
+    this.expositions = ['Sud', 'Est', 'Nord', 'Ouest', 'Nord-Sud', 'Est-Ouest', 'Sud-Ouest', 'Sud-Est', 'Autre'];
+    this.diagValues = [...'ABCDE'];
   }
 
   ngOnInit(): void {
