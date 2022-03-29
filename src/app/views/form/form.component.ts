@@ -66,6 +66,24 @@ export class FormComponent implements OnInit {
       lon: this.apart.lon
     }
     const dialogRef = this.dialog.open(FormMapDialogComponent, {minWidth: '500px', minHeight: '500px', data});
+    dialogRef.afterClosed().subscribe(
+      res => {
+        if (res) {
+          this.apart.lat = res.lat;
+          this.apart.lon = res.lon;
+          this.loading = true;
+          this._apartService.updateApart(this.pk, this.apart)
+            .subscribe(
+              () => {
+                this._snackBar.open('Mise à jour des coordonnées effectuée', 'OK');
+                this.loading = false;
+              },
+              err => console.error(err)
+            )
+        }
+      },
+      err => console.error(err)
+    );
   }
 
   public edit() {
