@@ -23,11 +23,8 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "./node_modules/leaflet/dist/images",
-                "output": "leaflet/"
-              },
+              { "glob": "**/*", "input": "src/assets/", "output": "/assets/" },
+              { "glob": "**/*", "input": "node_modules/leaflet/dist/images", "output": "leaflet/" },
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest"

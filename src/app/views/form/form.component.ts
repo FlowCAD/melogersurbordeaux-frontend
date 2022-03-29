@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 
 import { ApartService } from '@core/services/apart.service';
 import { IApart, Apart } from '@core/interfaces';
-import { formCommentDialogComponent } from '@views/form/form-comment-dialog.component';
+import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
+import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
 
 @Component({
   selector: 'app-form',
@@ -57,6 +58,16 @@ export class FormComponent implements OnInit {
     }
   }
 
+  public onClickOpenMap() {
+    const data = {
+      mode: this.mode,
+      appartCode: this.pk,
+      lat: this.apart.lat,
+      lon: this.apart.lon
+    }
+    const dialogRef = this.dialog.open(FormMapDialogComponent, {minWidth: '500px', minHeight: '500px', data});
+  }
+
   public edit() {
     this.apartBackup = {...this.apart};
     this.mode = 'edition';
@@ -101,7 +112,8 @@ export class FormComponent implements OnInit {
   }
 
   public addComment() {
-    const dialogRef = this.dialog.open(formCommentDialogComponent, { width: '400px', data: {appartCode: this.pk} });
+    const data = { appartCode: this.pk }
+    const dialogRef = this.dialog.open(FormCommentDialogComponent, { width: '400px', data });
 
     dialogRef.afterClosed().subscribe(
       (appart: Apart) => {

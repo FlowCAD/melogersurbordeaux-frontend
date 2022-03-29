@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Géolocaliser l'appartement</h1>
+<div mat-dialog-content>
+  <div class="map" leaflet style="height: 400px; width: 600px; padding: 0;"
+       [leafletOptions]="mapOptions"
+       [leafletLayers]="layers"
+       (leafletMapMove)="handleMapMove($event)"
+       (leafletMapReady)="onMapReady($event)">
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-button (click)="saveCoordinates()" [disabled]="isDisabled()">Valider</button>
+</div>

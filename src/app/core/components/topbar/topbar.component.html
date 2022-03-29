@@ -5,13 +5,10 @@
 
   <div fxLayout="row" fxShow="false" fxShow.gt-sm>
     <button mat-button routerLink="/map">
-      <mat-icon>map</mat-icon> Carte
+      <mat-icon>explore</mat-icon> Carte
     </button>
     <button mat-button routerLink="/apartments">
-      <mat-icon>info</mat-icon> Appartements
-    </button>
-    <button mat-button routerLink="/form" disabled>
-      <mat-icon>list</mat-icon> Formulaire
+      <mat-icon>format_list_bulleted</mat-icon> Appartements
     </button>
 
     <div *ngIf="auth.loggedIn(); then logoutBlock else loginBlock"></div>

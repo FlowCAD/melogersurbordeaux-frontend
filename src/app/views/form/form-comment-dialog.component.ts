@@ -10,11 +10,11 @@ import { Apart } from '@core/interfaces';
   templateUrl: './form-comment-dialog.component.html',
   styleUrls: ['./form.component.css']
 })
-export class formCommentDialogComponent {
+export class FormCommentDialogComponent {
   public comment: string = '';
 
   constructor(
-    public dialogRef: MatDialogRef<formCommentDialogComponent>,
+    public dialogRef: MatDialogRef<FormCommentDialogComponent>,
     private _apartService: ApartService,
     private _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: {appartCode: string}

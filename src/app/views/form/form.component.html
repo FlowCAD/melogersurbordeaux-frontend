@@ -1,5 +1,5 @@
-<mat-card *ngIf="!loading">
-  <form #apartForm="ngForm" class="form" (ngSubmit)="save()">
+<mat-card>
+  <form #apartForm="ngForm" class="form" (ngSubmit)="save()" *ngIf="!loading">
     <mat-card-title>{{ pk === 'new' ? 'Nouvel appartement' : apart?.code }}</mat-card-title>
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" type="button"
@@ -40,6 +40,7 @@
               <input matInput placeholder="https://www.leboncoin.fr/ventes_..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.link" name="link" required />
               <mat-error>Lien requis.</mat-error>
+              <a mat-icon-button matSuffix [disabled]="mode !== 'normal'" [href]="apart.link" target="_blank"><mat-icon>open_in_new</mat-icon></a>
             </mat-form-field>
           </td>
           <td>
@@ -112,7 +113,7 @@
               <mat-label>Latitude</mat-label>
               <input matInput type="number" placeholder="44. ..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.lat" name="lat" />
-              <!-- TODO Faire un onClick show map -->
+              <button type="button" mat-icon-button matSuffix (click)="onClickOpenMap()"><mat-icon>location_on</mat-icon></button>
             </mat-form-field>
           </td>
           <td>
@@ -120,6 +121,7 @@
               <mat-label>Longitude</mat-label>
               <input matInput type="number" placeholder="1. ..." [disabled]="mode === 'normal'"
                      [(ngModel)]="apart.lon" name="lon" />
+              <button type="button" mat-icon-button matSuffix (click)="onClickOpenMap()"><mat-icon>location_on</mat-icon></button>
             </mat-form-field>
           </td>
         </tr>
@@ -169,9 +171,11 @@
               </mat-select>
             </mat-form-field>
           </td>
-          <td>
-            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
-                          [(ngModel)]="apart.visAVis" name="visAVis">Vis à vis</mat-checkbox>
+          <td class="button-checkbox-row">
+            <button class="full-width" mat-button type="button" (click)="apart.visAVis = !apart.visAVis" [disabled]="mode === 'normal'">
+              <span style="font-weight: normal">Vis à vis&nbsp;</span>
+              <mat-icon [color]="mode === 'normal' ? 'lightgrey' : 'primary'">{{apart.visAVis ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
+            </button>
           </td>
           <td>
             <mat-form-field class="full-width">
@@ -205,13 +209,17 @@
               </mat-select>
             </mat-form-field>
           </td>
-          <td>
-            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
-                          [(ngModel)]="apart.parking" name="parking">Parking</mat-checkbox>
+          <td class="button-checkbox-row">
+            <button class="full-width" mat-button type="button" (click)="apart.parking = !apart.parking" [disabled]="mode === 'normal'">
+              <span style="font-weight: normal">Parking&nbsp;</span>
+              <mat-icon [color]="mode === 'normal' ? 'lightgrey' : 'primary'">{{apart.parking ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
+            </button>
           </td>
-          <td>
-            <mat-checkbox [disabled]="mode === 'normal'" [color]="'primary'"
-                          [(ngModel)]="apart.bikeParking" name="bikeParking">Local à vélo</mat-checkbox>
+          <td class="button-checkbox-row">
+            <button class="full-width" mat-button type="button" (click)="apart.bikeParking = !apart.bikeParking" [disabled]="mode === 'normal'">
+              <span style="font-weight: normal">Local à vélo&nbsp;</span>
+              <mat-icon [color]="mode === 'normal' ? 'lightgrey' : 'primary'">{{apart.bikeParking ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
+            </button>
           </td>
         </tr>
         <tr>
@@ -220,6 +228,14 @@
               <mat-label>Charges Annuelles</mat-label>
               <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
                     [(ngModel)]="apart.annualCondominiumFees" name="annualCondominiumFees">
+              <span matSuffix>&nbsp;€</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Nombre de lots</mat-label>
+              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.numberOfLots" name="numberOfLots">
             </mat-form-field>
           </td>
         </tr>
