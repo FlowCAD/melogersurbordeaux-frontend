@@ -10,7 +10,7 @@ import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/map', pathMatch: 'full' },
+  { path: '', redirectTo: '/apartments', pathMatch: 'full' },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   {
