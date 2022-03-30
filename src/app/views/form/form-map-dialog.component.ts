@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { Map, MapOptions, latLng, tileLayer, TileLayer, marker, Icon, icon, Marker, LatLng } from 'leaflet';
 
+import { MARKER_ICON, OSM_ATTRIBUTION } from '@core/constants';
+
 interface IDialogData {
   mode: 'creation' | 'edition' | 'normal';
   appartCode: string;
@@ -16,8 +18,8 @@ interface IDialogData {
   styleUrls: ['./form.component.css']
 })
 export class FormMapDialogComponent {
-  public latitude: number = 44.835;
-  public longitude: number = -0.57;
+  public latitude: number = 44.8385;
+  public longitude: number = -0.5625;
 
   // Since the map is provided by an outside context, it's defined value will not be know at instantiation time.
   //  As such, we'll use the "Definite Assignment Assertion" (!) to tell TypeScript that we know this value will
@@ -26,23 +28,15 @@ export class FormMapDialogComponent {
   public mapOptions: MapOptions;
   public tileLayerWiki: TileLayer;
   public layer: Marker<LatLng>;
-  readonly MARKER_ICON: Icon;
 
   constructor(
     public dialogRef: MatDialogRef<FormMapDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: IDialogData
   ) {
-    this.MARKER_ICON = icon({
-      iconSize: [ 25, 41 ],
-      iconAnchor: [ 13, 41 ],
-      iconUrl: 'leaflet/marker-icon.png',
-      shadowUrl: 'leaflet/marker-shadow.png'
-    });
-    const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: osmAttribution});
+    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
     this.layer = marker(
       [ this.latitude , this.longitude ],
-      { icon: this.MARKER_ICON }
+      { icon: MARKER_ICON }
     );
     this.mapOptions = {
       layers: [ this.tileLayerWiki ],
@@ -54,8 +48,8 @@ export class FormMapDialogComponent {
   }
 
   public isDisabled(): boolean {
-    const latitudeIsEqual = (this.data.lat.toFixed(5) === this.latitude.toFixed(5));
-    const longitudeIsEqual = (this.data.lon.toFixed(5) === this.longitude.toFixed(5));
+    const latitudeIsEqual = (this.data?.lat?.toFixed(5) === this.latitude.toFixed(5));
+    const longitudeIsEqual = (this.data?.lon?.toFixed(5) === this.longitude.toFixed(5));
     return (latitudeIsEqual && longitudeIsEqual) || this.data.mode === 'normal';
   }
 
@@ -65,7 +59,7 @@ export class FormMapDialogComponent {
       this.map.panTo(new LatLng(this.data.lat, this.data.lon));
       this.layer = marker(
         [this.data.lat, this.data.lon],
-        { icon: this.MARKER_ICON }
+        { icon: MARKER_ICON }
       );
     }
   }
@@ -78,7 +72,7 @@ export class FormMapDialogComponent {
     if (this.data.mode !== 'normal') {
       this.layer = marker(
         [newCenter.lat, newCenter.lng],
-        { icon: this.MARKER_ICON }
+        { icon: MARKER_ICON }
       );
     }
   }

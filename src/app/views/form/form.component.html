@@ -1,6 +1,6 @@
 <mat-card>
   <form #apartForm="ngForm" class="form" (ngSubmit)="save()" *ngIf="!loading">
-    <mat-card-title>{{ pk === 'new' ? 'Nouvel appartement' : apart?.code }}</mat-card-title>
+    <mat-card-title>{{ pk === 'new' ? 'Nouvel appartement' : pk }}</mat-card-title>
     <mat-card-actions align="end">
       <button mat-raised-button color="primary" type="button"
               *ngIf="mode === 'normal'"

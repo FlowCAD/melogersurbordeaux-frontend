@@ -1,10 +1,16 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON } from 'leaflet';
+import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, marker, icon, Icon } from 'leaflet';
 
+import { ApartService } from '@core/services/apart.service';
 import { MapService } from '@core/services/map.service';
 import { CryptoService } from '@core/services/crypto.service';
+
+import { Apart } from '@core/interfaces';
+import { MARKER_ICON, OSM_ATTRIBUTION } from '@core/constants';
 
 @Component({
   selector: 'app-map',
@@ -26,14 +32,15 @@ export class MapComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private _router: Router,
+    private _apartService: ApartService,
     private _mapService: MapService,
     private _crypto: CryptoService
   ) {
     this.lat = 44.835;
     this.lng = -0.57;
-    const osmAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-    this.tileLayerOsm = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: osmAttribution});
-    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: osmAttribution});
+    this.tileLayerOsm = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
+    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
     this.mapOptions = {
       layers: [ this.tileLayerOsm, this.tileLayerWiki ],
       zoom: 13.5,
@@ -58,6 +65,8 @@ export class MapComponent implements OnInit {
     this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => {
       geoJSON(json).addTo(this.map).bindTooltip(json.properties.title);
     })
+
+    this._displayApartMarkers();
   }
 
   public handleMapMove(event: any) {
@@ -74,6 +83,29 @@ export class MapComponent implements OnInit {
           console.log('key: ', key);
         },
         err => console.error(err)
+      )
+  }
+
+  private _displayApartMarkers() {
+    this._apartService.getApartList()
+      .subscribe(
+        res => {
+          res.forEach((apart: Apart) => {
+            if (apart.lat && apart.lon) {
+              const popupInfo = `<a href="/apartments/${apart.code}">${apart.name}</a>`;
+              marker([apart.lat, apart.lon], { icon: MARKER_ICON })
+                .addTo(this.map)
+                .bindPopup(popupInfo);
+            }
+          })
+        },
+        err => {
+          if (err instanceof HttpErrorResponse) {
+            if (err.status === 401) {
+              this._router.navigate(['/login']);
+            }
+          }
+        }
       )
   }
 }
