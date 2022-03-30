@@ -71,19 +71,24 @@ export class FormComponent implements OnInit {
         if (res) {
           this.apart.lat = res.lat;
           this.apart.lon = res.lon;
-          this.loading = true;
-          this._apartService.updateApart(this.pk, this.apart)
-            .subscribe(
-              () => {
-                this._snackBar.open('Mise à jour des coordonnées effectuée', 'OK');
-                this.loading = false;
-              },
-              err => console.error(err)
-            )
         }
       },
       err => console.error(err)
     );
+  }
+
+  public onChangePrice() {
+    this._computePriceBySurface();
+    this.apart.notaryFees = this.apart.price * 9 / 100;
+  }
+
+  public onChangeSurface() {
+    this._computePriceBySurface();
+  }
+
+  public onChangeParking() {
+    this.apart.parking = !this.apart.parking;
+    this._computePriceBySurface();
   }
 
   public edit() {
@@ -157,6 +162,13 @@ export class FormComponent implements OnInit {
         }
       }
     )
+  }
+
+  private _computePriceBySurface() {
+    if (!this.apart.price || !this.apart.surface) return
+
+    const priceToConsider = this.apart.price - (this.apart.parking ? 10000 : 0);
+    this.apart.priceBySurface = priceToConsider / this.apart.surface;
   }
 
 }

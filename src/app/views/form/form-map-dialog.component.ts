@@ -56,13 +56,17 @@ export class FormMapDialogComponent {
   public isDisabled(): boolean {
     const latitudeIsEqual = (this.data.lat.toFixed(5) === this.latitude.toFixed(5));
     const longitudeIsEqual = (this.data.lon.toFixed(5) === this.longitude.toFixed(5));
-    return (latitudeIsEqual && longitudeIsEqual);
+    return (latitudeIsEqual && longitudeIsEqual) || this.data.mode === 'normal';
   }
 
   public onMapReady(map: Map) {
     this.map = map;
     if (this.data.lat && this.data.lon) {
       this.map.panTo(new LatLng(this.data.lat, this.data.lon));
+      this.layer = marker(
+        [this.data.lat, this.data.lon],
+        { icon: this.MARKER_ICON }
+      );
     }
   }
 
@@ -71,10 +75,12 @@ export class FormMapDialogComponent {
     this.latitude = newCenter.lat;
     this.longitude = newCenter.lng;
 
-    this.layer = marker(
-      [newCenter.lat, newCenter.lng],
-      { icon: this.MARKER_ICON }
-    );
+    if (this.data.mode !== 'normal') {
+      this.layer = marker(
+        [newCenter.lat, newCenter.lng],
+        { icon: this.MARKER_ICON }
+      );
+    }
   }
 
   public saveCoordinates() {

@@ -56,8 +56,10 @@
           <td>
             <mat-form-field class="full-width">
               <mat-label>Prix</mat-label>
-              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
-                    [(ngModel)]="apart.price" name="price" required>
+              <input matInput type="number" placeholder="0"
+                     [disabled]="mode === 'normal'" required
+                     [(ngModel)]="apart.price" name="price"
+                     (ngModelChange)="onChangePrice()">
               <span matSuffix>&nbsp;€</span>
             </mat-form-field>
           </td>
@@ -76,7 +78,7 @@
             <mat-form-field class="full-width">
               <mat-label>Frais d'Agence</mat-label>
               <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
-                    [(ngModel)]="apart.notaryFees" name="notaryFees">
+                    [(ngModel)]="apart.agencyPrice" name="agencyPrice">
               <span matSuffix>&nbsp;€</span>
             </mat-form-field>
           </td>
@@ -84,8 +86,11 @@
             <mat-form-field class="full-width">
               <mat-label>Frais de Notaire</mat-label>
               <input matInput type="number" placeholder="0" disabled
-                    [(ngModel)]="apart.priceBySurface" name="priceBySurface">
+                    [(ngModel)]="apart.notaryFees" name="notaryFees">
               <span matSuffix>&nbsp;€</span>
+              <mat-hint align="start">
+                Estimé à 9%
+              </mat-hint>
               <mat-hint align="end" *ngIf="['creation', 'edition'].includes(mode)">
                 Champ calculé automatiquement (requis: Prix)
               </mat-hint>
@@ -129,8 +134,10 @@
           <td>
             <mat-form-field class="full-width">
               <mat-label>Surface au sol</mat-label>
-              <input matInput type="number" placeholder="0" [disabled]="mode === 'normal'"
-                    [(ngModel)]="apart.surface" name="surface" required>
+              <input matInput type="number" placeholder="0"
+                     [disabled]="mode === 'normal'" required
+                     [(ngModel)]="apart.surface" name="surface"
+                     (ngModelChange)="onChangeSurface()">
               <span matSuffix>&nbsp;m&#178;</span>
             </mat-form-field>
           </td>
@@ -210,7 +217,7 @@
             </mat-form-field>
           </td>
           <td class="button-checkbox-row">
-            <button class="full-width" mat-button type="button" (click)="apart.parking = !apart.parking" [disabled]="mode === 'normal'">
+            <button class="full-width" mat-button type="button" (click)="onChangeParking()" [disabled]="mode === 'normal'">
               <span style="font-weight: normal">Parking&nbsp;</span>
               <mat-icon [color]="mode === 'normal' ? 'lightgrey' : 'primary'">{{apart.parking ? 'check_box' : 'check_box_outline_blank'}}</mat-icon>
             </button>
