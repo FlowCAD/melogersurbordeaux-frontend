@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 
 import { ApartService } from '@core/services/apart.service';
 import { IApart } from '@core/interfaces';
+import { STATES } from '@core/constants';
 
 @Component({
   selector: 'app-apartment',
@@ -18,7 +19,18 @@ export class ApartmentComponent implements OnInit {
   public loading: boolean;
   public dataSource: MatTableDataSource<IApart>;
   public apartments: IApart[];
-  public columnsToDisplay = ['code', 'name', 'description', 'comments'];
+  public columnsToDisplay = [
+    'name',
+    'type',
+    'state',
+    'price',
+    'priceBySurface',
+    'district',
+    'surface',
+    'exposition',
+    'createdAt'
+  ];
+  public states: any;
 
   constructor(
     private _router: Router,
@@ -27,6 +39,7 @@ export class ApartmentComponent implements OnInit {
     this.loading = false;
     this.apartments = [];
     this.dataSource = new MatTableDataSource(this.apartments);
+    this.states = STATES;
   }
 
   ngOnInit(): void {

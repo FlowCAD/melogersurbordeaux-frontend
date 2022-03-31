@@ -1,6 +1,7 @@
 export interface IApart {
   _id: string;
   code?: string;
+  type: string;
   name: string;
   link: string;
   state: string;
@@ -42,6 +43,7 @@ export interface IComment {
 export class Apart {
   public _id: string;
   public code?: string;
+  public type: string;
   public name: string;
   public link: string;
   public state: string;
@@ -75,6 +77,7 @@ export class Apart {
 
   constructor() {
     this._id = '';
+    this.type = 'T2';
     this.name = '';
     this.link = '';
     this.state = 'new';

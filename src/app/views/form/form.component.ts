@@ -10,6 +10,7 @@ import { ApartService } from '@core/services/apart.service';
 import { IApart, Apart } from '@core/interfaces';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
+import { STATES_ARRAY } from '@core/constants';
 
 @Component({
   selector: 'app-form',
@@ -21,7 +22,8 @@ export class FormComponent implements OnInit {
   public loading: boolean = false;
   public mode: 'creation' | 'edition' | 'normal' = 'normal';
   public apart!: Apart;
-  public states: {value: string, viewValue: string}[];
+  public types: string[];
+  public states = STATES_ARRAY;
   public districts: string[];
   public exteriorOptions: string[];
   public expositions: string[];
@@ -37,11 +39,7 @@ export class FormComponent implements OnInit {
     private _apartService: ApartService,
     private _snackBar: MatSnackBar
   ) {
-    this.states = [
-      {value: 'new', viewValue: 'Nouveau'},
-      {value: 'accepted', viewValue: 'A visiter'},
-      {value: 'refused', viewValue: 'Refusé'}
-    ];
+    this.types = ['T2', 'T2-Bis', 'T3', 'T3-Bis', 'T4'];
     this.districts = ['Saint Augustin', 'Saint Genès', 'La Bastide', 'Nansouty', 'Saint Paul', 'Saint Pierre', 'Chartrons', 'Autre'];
     this.exteriorOptions = ['Terasse', 'Balcon', 'Loggia', 'Jardin', 'Autre', 'Aucun'];
     this.expositions = ['Sud', 'Est', 'Nord', 'Ouest', 'Nord-Sud', 'Est-Ouest', 'Sud-Ouest', 'Sud-Est', 'Autre'];
@@ -164,11 +162,12 @@ export class FormComponent implements OnInit {
     )
   }
 
-  private _computePriceBySurface() {
+  private _computePriceBySurface(): void {
     if (!this.apart.price || !this.apart.surface) return
 
     const priceToConsider = this.apart.price - (this.apart.parking ? 10000 : 0);
-    this.apart.priceBySurface = priceToConsider / this.apart.surface;
+    const priceBySurface = priceToConsider / this.apart.surface;
+    this.apart.priceBySurface = Math.round(priceBySurface * 100) / 100;
   }
 
 }
