@@ -7,19 +7,19 @@
     <button mat-button routerLink="/map">
       <mat-icon>explore</mat-icon> Carte
     </button>
-    <button mat-button routerLink="/apartments">
-      <mat-icon>format_list_bulleted</mat-icon> Appartements
+    <button mat-button routerLink="/list">
+      <mat-icon>format_list_bulleted</mat-icon> Liste
     </button>
 
     <div *ngIf="auth.loggedIn(); then logoutBlock else loginBlock"></div>
     <ng-template #logoutBlock>
       <button mat-button (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon> Logout
+        <mat-icon>exit_to_app</mat-icon> Se déconnecter
       </button>
     </ng-template>
     <ng-template #loginBlock>
       <button mat-button routerLink="/login">
-        <mat-icon>power_settings_new</mat-icon> Login
+        <mat-icon>power_settings_new</mat-icon> Connexion
       </button>
     </ng-template>
   </div>
@@ -33,16 +33,16 @@
   <button mat-menu-item routerLink="/map">
     <mat-icon>map</mat-icon> Carte
   </button>
-  <button mat-menu-item routerLink="/apartments">
-    <mat-icon>info</mat-icon> Appartements
+  <button mat-menu-item routerLink="/list">
+    <mat-icon>info</mat-icon> Liste
   </button>
   <button mat-menu-item routerLink="/form" disabled>
     <mat-icon>list</mat-icon> Formulaire
   </button>
   <button mat-menu-item routerLink="/login" *ngIf="!auth.loggedIn()">
-    <mat-icon>power_settings_new</mat-icon> Login
+    <mat-icon>power_settings_new</mat-icon> Connexion
   </button>
   <button mat-menu-item *ngIf="auth.loggedIn()" (click)="logout()">
-    <mat-icon>exit_to_app</mat-icon> Logout
+    <mat-icon>exit_to_app</mat-icon> Se déconnecter
   </button>
 </mat-menu>

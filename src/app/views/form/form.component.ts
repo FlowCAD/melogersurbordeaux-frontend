@@ -114,7 +114,7 @@ export class FormComponent implements OnInit {
         this._snackBar.open('Sauvegarde effectuée', 'OK');
         if (this.mode === 'creation') {
           this.pk = res.code || 'new';
-          this._router.navigateByUrl(`/apartments/${res.code}`);
+          this._router.navigateByUrl(`/list/${res.code}`);
         }
         this.mode = 'normal';
         this.loading = false;

@@ -1,7 +1,7 @@
 <mat-card *ngIf="!loading">
   <mat-card-title>Liste des appartements: {{apartments.length}}</mat-card-title>
   <mat-card-actions align="end">
-    <button mat-raised-button color="primary" type="button" [routerLink]="['/apartments', 'new']">Ajouter</button>
+    <button mat-raised-button color="primary" type="button" [routerLink]="['/list', 'new']">Ajouter</button>
   </mat-card-actions>
   <mat-card-content>
     <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">

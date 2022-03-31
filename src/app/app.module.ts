@@ -22,7 +22,7 @@ import { CryptoService } from '@core/services/crypto.service';
 import { MapService } from '@core/services/map.service';
 import { TokenInterceptorService } from '@core/services/token-interceptor.service'
 
-import { ApartmentComponent } from '@views/apartment/apartment.component';
+import { ListComponent } from '@views/list/list.component';
 import { FormComponent } from '@views/form/form.component';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
@@ -41,7 +41,7 @@ registerLocaleData(localeFr, 'fr');
     // Core
     TopbarComponent,
     // Views
-    ApartmentComponent,
+    ListComponent,
     FormComponent,
     FormCommentDialogComponent,
     FormMapDialogComponent,

@@ -41,7 +41,7 @@ export class LoginComponent {
           this.loginValid = true;
           localStorage.setItem('token', res.token);
           localStorage.setItem('userName', this.userData.name);
-          this._router.navigate(['/apartments']);
+          this._router.navigate(['/list']);
         },
         err => {
           this.userData.password = '';

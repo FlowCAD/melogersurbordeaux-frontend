@@ -92,7 +92,7 @@ export class MapComponent implements OnInit {
         res => {
           res.forEach((apart: Apart) => {
             if (apart.lat && apart.lon) {
-              const popupInfo = `<a href="/apartments/${apart.code}">${apart.name}</a>`;
+              const popupInfo = `<a href="/list/${apart.code}">${apart.name}</a>`;
               marker([apart.lat, apart.lon], { icon: MARKER_ICON })
                 .addTo(this.map)
                 .bindPopup(popupInfo);

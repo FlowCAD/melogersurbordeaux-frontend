@@ -10,11 +10,11 @@ import { IApart } from '@core/interfaces';
 import { STATES } from '@core/constants';
 
 @Component({
-  selector: 'app-apartment',
-  templateUrl: './apartment.component.html',
-  styleUrls: ['./apartment.component.css']
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.css']
 })
-export class ApartmentComponent implements OnInit {
+export class ListComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   public loading: boolean;
   public dataSource: MatTableDataSource<IApart>;
@@ -47,7 +47,7 @@ export class ApartmentComponent implements OnInit {
   }
 
   public onClick(appart: IApart) {
-    this._router.navigate([`/apartments/${appart.code}`]);
+    this._router.navigate([`/list/${appart.code}`]);
   }
 
   private _getApartList(): void {
