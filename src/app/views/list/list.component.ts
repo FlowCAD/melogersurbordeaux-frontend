@@ -28,6 +28,7 @@ export class ListComponent implements OnInit {
     'district',
     'surface',
     'exposition',
+    'comments',
     'createdAt'
   ];
   public states: any;

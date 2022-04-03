@@ -1,3 +1,6 @@
+<div fxLayoutAlign="center center" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
 <mat-card *ngIf="!loading">
   <mat-card-title>Liste des appartements: {{apartments.length}}</mat-card-title>
   <mat-card-actions align="end">
@@ -40,6 +43,10 @@
       <ng-container matColumnDef="exposition">
         <mat-header-cell *matHeaderCellDef>Exposition</mat-header-cell>
         <mat-cell *matCellDef="let apart"> {{apart.exposition}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="comments">
+        <mat-header-cell *matHeaderCellDef>Commentaires</mat-header-cell>
+        <mat-cell *matCellDef="let apart"> {{apart.comments.length}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="createdAt">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</mat-header-cell>

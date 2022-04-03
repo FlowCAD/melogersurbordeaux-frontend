@@ -1,4 +1,7 @@
-<mat-card>
+<mat-card fxLayoutAlign="center center">
+  <div *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
   <form #apartForm="ngForm" class="form" (ngSubmit)="save()" *ngIf="!loading">
     <mat-card-title>{{ pk === 'new' ? 'Nouvel appartement' : pk }}</mat-card-title>
     <mat-card-actions align="end">
