@@ -27,6 +27,7 @@ export class MapService {
     const baseLayersList = {
       'Open Street Map': tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION}),
       'OSM Hot': tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION}),
+      'OSM Cycle Map': tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION}),
       'Imagerie': tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'),
       'Topo': tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png')
     };

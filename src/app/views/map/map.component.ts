@@ -57,9 +57,8 @@ export class MapComponent implements OnInit {
     this.map = map;
     this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => geoJSON(json).addTo(this.map).bindTooltip(json.properties.title))
 
-    this.http.get('assets/geojsons/districts.geojson').subscribe((geojson: any) => geoJSON(geojson).addTo(this.map))
-
     this._displayApartMarkers();
+    this._displayDistrictsLayer();
   }
 
   public handleMapMove(event: any) {
@@ -88,8 +87,8 @@ export class MapComponent implements OnInit {
 
   private async _displayApartMarkers() {
     try {
-      const apartlist = await this._apartService.getApartList().toPromise();
-      apartlist.forEach((apart: Apart) => {
+      const apartList = await this._apartService.getApartList().toPromise();
+      apartList.forEach((apart: Apart) => {
         if (apart.lat && apart.lon) {
           const popupInfo = `<a href="/list/${apart.code}">${apart.name}</a>`;
           marker([apart.lat, apart.lon], { icon: MARKER_ICON })
@@ -103,6 +102,15 @@ export class MapComponent implements OnInit {
           this._router.navigate(['/login']);
         }
       }
+    }
+  }
+
+  private async _displayDistrictsLayer() {
+    try {
+      const districtsList: any = await this.http.get('assets/geojsons/districts.geojson').toPromise();
+      this.layersControl.overlays = {'Quartiers': geoJSON(districtsList)};
+    } catch (err) {
+      console.error('Erreur lors de la récupération des quartiers.', err);
     }
   }
 }
