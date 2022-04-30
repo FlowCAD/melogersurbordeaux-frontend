@@ -26,7 +26,6 @@ export class MapComponent implements OnInit {
   public mapOptions: MapOptions;
   public lat: number;
   public lng: number;
-  public tileLayerOsm : TileLayer;
   public tileLayerWiki : TileLayer;
   public layersControl: any;
 
@@ -39,32 +38,26 @@ export class MapComponent implements OnInit {
   ) {
     this.lat = 44.835;
     this.lng = -0.57;
-    this.tileLayerOsm = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
     this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
     this.mapOptions = {
-      layers: [ this.tileLayerOsm, this.tileLayerWiki ],
+      layers: [ this.tileLayerWiki ],
       zoom: 13.5,
       minZoom: 13,
       maxZoom: 19,
       center: latLng([ this.lat, this.lng])
     };
-    this.layersControl = {
-      baseLayers: {
-        'Open Street Map': this.tileLayerOsm,
-        'Wikimedia Maps': this.tileLayerWiki
-      }
-    };
   }
 
   ngOnInit(): void {
+    this._initMap();
     this._getMapApiKey();
   }
 
   public onMapReady(map: Map) {
     this.map = map;
-    this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => {
-      geoJSON(json).addTo(this.map).bindTooltip(json.properties.title);
-    })
+    this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => geoJSON(json).addTo(this.map).bindTooltip(json.properties.title))
+
+    this.http.get('assets/geojsons/districts.geojson').subscribe((geojson: any) => geoJSON(geojson).addTo(this.map))
 
     this._displayApartMarkers();
   }
@@ -73,6 +66,13 @@ export class MapComponent implements OnInit {
     const newCenter = event.target.getCenter();
     this.lat = newCenter.lat;
     this.lng = newCenter.lng;
+  }
+
+  private _initMap() {
+    const mainLayer = {'Wikimedia Maps': this.tileLayerWiki};
+    this.layersControl = {
+      baseLayers: {...mainLayer, ...this._mapService.baseLayersList}
+    };
   }
 
   private _getMapApiKey() {
@@ -86,26 +86,23 @@ export class MapComponent implements OnInit {
       )
   }
 
-  private _displayApartMarkers() {
-    this._apartService.getApartList()
-      .subscribe(
-        res => {
-          res.forEach((apart: Apart) => {
-            if (apart.lat && apart.lon) {
-              const popupInfo = `<a href="/list/${apart.code}">${apart.name}</a>`;
-              marker([apart.lat, apart.lon], { icon: MARKER_ICON })
-                .addTo(this.map)
-                .bindPopup(popupInfo);
-            }
-          })
-        },
-        err => {
-          if (err instanceof HttpErrorResponse) {
-            if (err.status === 401) {
-              this._router.navigate(['/login']);
-            }
-          }
+  private async _displayApartMarkers() {
+    try {
+      const apartlist = await this._apartService.getApartList().toPromise();
+      apartlist.forEach((apart: Apart) => {
+        if (apart.lat && apart.lon) {
+          const popupInfo = `<a href="/list/${apart.code}">${apart.name}</a>`;
+          marker([apart.lat, apart.lon], { icon: MARKER_ICON })
+            .addTo(this.map)
+            .bindPopup(popupInfo);
         }
-      )
+      });
+    } catch (err) {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) {
+          this._router.navigate(['/login']);
+        }
+      }
+    }
   }
 }
