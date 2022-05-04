@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, circleMarker, CircleMarker } from 'leaflet';
+import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, circleMarker, CircleMarker, LatLng, marker } from 'leaflet';
+import Geocoder from 'leaflet-control-geocoder';
 
 import { ApartService } from '@core/services/apart.service';
 import { MapService } from '@core/services/map.service';
@@ -44,7 +45,7 @@ export class MapComponent implements OnInit {
       layers: [ this.tileLayerWiki ],
       zoom: 13.5,
       minZoom: 13,
-      maxZoom: 19,
+      maxZoom: 18,
       center: latLng([ this.lat, this.lng])
     };
   }
@@ -57,7 +58,25 @@ export class MapComponent implements OnInit {
   public onMapReady(map: Map) {
     this.map = map;
 
-    this.map.on('click', () => this._resetCircleMarkerListStyle())
+    this.map.on('click', () => this._resetCircleMarkerListStyle());
+
+    new Geocoder({
+      collapsed: false,
+      placeholder: 'Rechercher',
+      errorMessage: 'Aucun résultat.',
+      showUniqueResult: false,
+      showResultIcons: true,
+      defaultMarkGeocode: false
+    })
+      .addTo(this.map)
+      .on('markgeocode', e => {
+        const latlng: LatLng = e.geocode.center;
+        marker(latlng, { icon: MARKER_ICON })
+          .bindPopup(e.geocode.html || e.geocode.name)
+          .openPopup()
+          .addTo(map);
+        map.flyTo(latlng, 17);
+      });
 
     this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => geoJSON(json).addTo(this.map).bindTooltip(json.properties.title))
 
