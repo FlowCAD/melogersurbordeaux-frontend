@@ -78,10 +78,9 @@ export class MapComponent implements OnInit {
         map.flyTo(latlng, 17);
       });
 
-    this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => geoJSON(json).addTo(this.map).bindTooltip(json.properties.title))
-
-    this._displayApartMarkers();
+    this._displayIsochrones();
     this._displayDistrictsLayer();
+    this._displayApartMarkers();
   }
 
   public handleMapMove(event: any) {
@@ -149,6 +148,7 @@ export class MapComponent implements OnInit {
     try {
       const districtsList: any = await this.http.get('assets/geojsons/districts.geojson').toPromise();
       this.layersControl.overlays = {
+        ...this.layersControl.overlays,
         'Quartiers': geoJSON(
           districtsList,
           {
@@ -159,6 +159,24 @@ export class MapComponent implements OnInit {
       };
     } catch (err) {
       console.error('Erreur lors de la récupération des quartiers.', err);
+    }
+  }
+
+  private async _displayIsochrones() {
+    try {
+      const isochroneObject: any = await this.http.get('assets/geojsons/ped_15mn.json').toPromise()
+      this.layersControl.overlays = {
+        ...this.layersControl.overlays,
+        'Isochrone - 15mn': geoJSON(
+          isochroneObject,
+          {
+            style: { 'color': '#3df037', 'weight': 2, 'opacity': 0.5 },
+            onEachFeature: (feature, layer) => layer.bindTooltip(`<i>${feature.properties.title}</i>`)
+          }
+        )
+      };
+    } catch (err) {
+      console.error('Erreur lors de la récupération des isochrones.', err);
     }
   }
 
