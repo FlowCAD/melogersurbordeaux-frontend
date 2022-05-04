@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, marker, icon, Icon } from 'leaflet';
+import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, circleMarker, CircleMarker } from 'leaflet';
 
 import { ApartService } from '@core/services/apart.service';
 import { MapService } from '@core/services/map.service';
@@ -28,6 +28,7 @@ export class MapComponent implements OnInit {
   public lng: number;
   public tileLayerWiki : TileLayer;
   public layersControl: any;
+  private _circleMarkerList: {[key: string]: CircleMarker<any>} = {};
 
   constructor(
     private http: HttpClient,
@@ -55,6 +56,9 @@ export class MapComponent implements OnInit {
 
   public onMapReady(map: Map) {
     this.map = map;
+
+    this.map.on('click', () => this._resetCircleMarkerListStyle())
+
     this.http.get('assets/geojsons/ped_15mn.json').subscribe((json: any) => geoJSON(json).addTo(this.map).bindTooltip(json.properties.title))
 
     this._displayApartMarkers();
@@ -86,14 +90,31 @@ export class MapComponent implements OnInit {
   }
 
   private async _displayApartMarkers() {
+    const circleMarkerOptions = {
+      radius: 10,
+      fillColor: '#94CDFE',
+      color: '#2C58A5',
+      weight: 2,
+      opacity: 1,
+      fillOpacity: 0.8
+    };
+
     try {
       const apartList = await this._apartService.getApartList().toPromise();
       apartList.forEach((apart: Apart) => {
         if (apart.lat && apart.lon) {
-          const popupInfo = `<a href="/list/${apart.code}">${apart.name}</a>`;
-          marker([apart.lat, apart.lon], { icon: MARKER_ICON })
+          let currentCircleMarker: CircleMarker<any>;
+          currentCircleMarker = circleMarker(
+            [apart.lat, apart.lon],
+            circleMarkerOptions
+          )
             .addTo(this.map)
-            .bindPopup(popupInfo);
+            .on('click', () => {
+              this._resetCircleMarkerListStyle();
+              currentCircleMarker.setStyle({fillColor: '#105EE5'});
+            })
+            .bindPopup(`<a href="/list/${apart.code}">${apart.name}</a>`);
+          this._circleMarkerList[apart.name] = currentCircleMarker;
         }
       });
     } catch (err) {
@@ -108,9 +129,24 @@ export class MapComponent implements OnInit {
   private async _displayDistrictsLayer() {
     try {
       const districtsList: any = await this.http.get('assets/geojsons/districts.geojson').toPromise();
-      this.layersControl.overlays = {'Quartiers': geoJSON(districtsList)};
+      this.layersControl.overlays = {
+        'Quartiers': geoJSON(
+          districtsList,
+          {
+            style: { 'color': '#ff7800', 'weight': 2, 'opacity': 0.5 },
+            onEachFeature: (feature, layer) => layer.bindPopup(`<i>${feature.properties.nom}</i>`)
+          }
+        )
+      };
     } catch (err) {
       console.error('Erreur lors de la récupération des quartiers.', err);
     }
   }
+
+  private _resetCircleMarkerListStyle() {
+    for (const k in this._circleMarkerList) {
+      this._circleMarkerList[k].setStyle({fillColor: '#94CDFE'});
+    }
+  }
+
 }
