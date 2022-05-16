@@ -26,6 +26,10 @@ td {
   padding-top: 10px;
 }
 
-.mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after, .mat-input-element:disabled {
-  color: rgba(0,0,0,0.6)!important;
+::ng-deep .mat-input-element {
+  color: rgba(0,0,0,0.7)!important;
+}
+
+::ng-deep .mat-select-value {
+  color: rgba(0,0,0,0.7)!important;
 }

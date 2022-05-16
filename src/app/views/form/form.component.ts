@@ -134,7 +134,7 @@ export class FormComponent implements OnInit {
 
   public addComment() {
     const data = { appartCode: this.pk }
-    const dialogRef = this.dialog.open(FormCommentDialogComponent, { width: '400px', data });
+    const dialogRef = this.dialog.open(FormCommentDialogComponent, { width: '700px', data });
 
     dialogRef.afterClosed().subscribe(
       (appart: Apart) => {

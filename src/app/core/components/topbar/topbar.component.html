@@ -31,13 +31,10 @@
 
 <mat-menu x-position="before" #menu="matMenu">
   <button mat-menu-item routerLink="/map">
-    <mat-icon>map</mat-icon> Carte
+    <mat-icon>explore</mat-icon> Carte
   </button>
   <button mat-menu-item routerLink="/list">
-    <mat-icon>info</mat-icon> Liste
-  </button>
-  <button mat-menu-item routerLink="/form" disabled>
-    <mat-icon>list</mat-icon> Formulaire
+    <mat-icon>format_list_bulleted</mat-icon> Liste
   </button>
   <button mat-menu-item routerLink="/login" *ngIf="!auth.loggedIn()">
     <mat-icon>power_settings_new</mat-icon> Connexion
