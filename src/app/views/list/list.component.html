@@ -34,7 +34,7 @@
       </ng-container>
       <ng-container matColumnDef="district">
         <mat-header-cell *matHeaderCellDef>Quartier</mat-header-cell>
-        <mat-cell *matCellDef="let apart"> {{apart.district}} </mat-cell>
+        <mat-cell *matCellDef="let apart" style="text-align: left"> {{districtsObject[apart.district] || apart.district}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="surface">
         <mat-header-cell *matHeaderCellDef>Surface</mat-header-cell>

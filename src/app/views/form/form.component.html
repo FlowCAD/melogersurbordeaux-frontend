@@ -106,7 +106,7 @@
             <mat-form-field class="full-width">
               <mat-label>Quartier</mat-label>
               <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.district" name="district">
-                <mat-option *ngFor="let val of districts" [value]="val">{{val}}</mat-option>
+                <mat-option *ngFor="let val of districtsObject" [value]="val.key">{{val.value}}</mat-option>
               </mat-select>
             </mat-form-field>
           </td>

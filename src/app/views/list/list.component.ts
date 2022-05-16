@@ -7,7 +7,7 @@ import { MatSort } from '@angular/material/sort';
 
 import { ApartService } from '@core/services/apart.service';
 import { IApart } from '@core/interfaces';
-import { STATES } from '@core/constants';
+import { STATES, DISCTRICTS } from '@core/constants';
 
 @Component({
   selector: 'app-list',
@@ -31,7 +31,8 @@ export class ListComponent implements OnInit {
     'comments',
     'createdAt'
   ];
-  public states: any;
+  public states: {[key: string]: { label: string, color: string }};
+  public districtsObject: {[key: string]: string} = {};
 
   constructor(
     private _router: Router,
@@ -41,6 +42,7 @@ export class ListComponent implements OnInit {
     this.apartments = [];
     this.dataSource = new MatTableDataSource(this.apartments);
     this.states = STATES;
+    DISCTRICTS.forEach(district => this.districtsObject[district.key] = district.value);
   }
 
   ngOnInit(): void {
