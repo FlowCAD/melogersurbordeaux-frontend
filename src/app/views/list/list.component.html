@@ -1,13 +1,13 @@
 <div fxLayoutAlign="center center" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
-<mat-card *ngIf="!loading">
+<mat-card>
   <mat-card-title>Liste des appartements: {{apartments.length}}</mat-card-title>
   <mat-card-actions align="end">
     <button mat-raised-button color="primary" type="button" [routerLink]="['/list', 'new']">Ajouter</button>
   </mat-card-actions>
   <mat-card-content>
-    <mat-table [dataSource]="dataSource" matSort class="mat-elevation-z2">
+    <mat-table [dataSource]="dataSource" matSort matSortActive="createdAt" matSortDirection="desc" class="mat-elevation-z2">
       <ng-container matColumnDef="name" sticky>
         <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
         <mat-cell *matCellDef="let apart"> {{apart.name}} </mat-cell>
@@ -25,11 +25,11 @@
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="price">
-        <mat-header-cell *matHeaderCellDef>Prix</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Prix</mat-header-cell>
         <mat-cell *matCellDef="let apart"> {{apart.price}}&nbsp;€ </mat-cell>
       </ng-container>
       <ng-container matColumnDef="priceBySurface">
-        <mat-header-cell *matHeaderCellDef>Prix au m&#178;</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Prix au m&#178;</mat-header-cell>
         <mat-cell *matCellDef="let apart"> {{apart.priceBySurface}}&nbsp;€ </mat-cell>
       </ng-container>
       <ng-container matColumnDef="district">
@@ -50,7 +50,7 @@
       </ng-container>
       <ng-container matColumnDef="createdAt">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Date de création</mat-header-cell>
-        <mat-cell *matCellDef="let apart"> {{apart.createdAt | date:'medium'}} </mat-cell>
+        <mat-cell *matCellDef="let apart"> {{apart.createdAt | date:'d MMM y à HH:mm'}} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="columnsToDisplay; sticky: true"></mat-header-row>

@@ -7,6 +7,7 @@ export const STATES = {
 
 export const STATES_ARRAY = [
   { value: 'new', label: 'Nouveau', color: 'primary' },
+  { value: 'in-progress', label: 'A discuter', color: 'accent' },
   { value: 'accepted', label: 'A visiter', color: 'accent' },
   { value: 'refused', label: 'Refusé', color: 'grey' },
   { value: 'selled', label: 'Vendu', color: 'grey'}

@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,7 +14,7 @@ import { STATES, DISCTRICTS } from '@core/constants';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort, { static: false }) sort!: MatSort;
   public loading: boolean;
   public dataSource: MatTableDataSource<IApart>;
@@ -27,7 +27,6 @@ export class ListComponent implements OnInit {
     'priceBySurface',
     'district',
     'surface',
-    'exposition',
     'comments',
     'createdAt'
   ];
@@ -47,6 +46,18 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this._getApartList();
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (item: any, property) => {
+      switch (property) {
+        case 'createdAt':
+          return new Date(item.createdAt || '').getTime();
+        default:
+          return item[property];
+      }
+    };
   }
 
   public onClick(appart: IApart) {
