@@ -22,10 +22,11 @@ import { CryptoService } from '@core/services/crypto.service';
 import { MapService } from '@core/services/map.service';
 import { TokenInterceptorService } from '@core/services/token-interceptor.service'
 
-import { ListComponent } from '@views/list/list.component';
+import { ChartsComponent } from '@views/charts/charts.component';
 import { FormComponent } from '@views/form/form.component';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
+import { ListComponent } from '@views/list/list.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
@@ -41,10 +42,11 @@ registerLocaleData(localeFr, 'fr');
     // Core
     TopbarComponent,
     // Views
-    ListComponent,
+    ChartsComponent,
     FormComponent,
     FormCommentDialogComponent,
     FormMapDialogComponent,
+    ListComponent,
     LoginComponent,
     MapComponent,
     RegisterComponent,

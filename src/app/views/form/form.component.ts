@@ -10,7 +10,7 @@ import { ApartService } from '@core/services/apart.service';
 import { IApart, Apart } from '@core/interfaces';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
-import { DISCTRICTS, STATES_ARRAY } from '@core/constants';
+import { DISTRICTS, STATES_ARRAY } from '@core/constants';
 
 @Component({
   selector: 'app-form',
@@ -40,7 +40,7 @@ export class FormComponent implements OnInit {
     private _snackBar: MatSnackBar
   ) {
     this.types = ['T2', 'T2-Bis', 'T3', 'T3-Bis', 'T4'];
-    this.districtsObject = DISCTRICTS;
+    this.districtsObject = DISTRICTS;
     this.exteriorOptions = ['Terasse', 'Balcon', 'Loggia', 'Jardin', 'Autre', 'Aucun'];
     this.expositions = ['Sud', 'Est', 'Nord', 'Ouest', 'Nord-Sud', 'Est-Ouest', 'Sud-Ouest', 'Sud-Est', 'Autre'];
     this.diagValues = [...'ABCDE'];

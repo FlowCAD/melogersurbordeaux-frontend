@@ -3,8 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AuthGuard } from '@core/auth.guard';
 
-import { ListComponent } from '@views/list/list.component';
+import { ChartsComponent } from '@views/charts/charts.component';
 import { FormComponent } from '@views/form/form.component';
+import { ListComponent } from '@views/list/list.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
@@ -30,6 +31,12 @@ const routes: Routes = [
     data: {title: 'Appartements'},
     canActivate: [AuthGuard]
   },
+  {
+    path: 'charts',
+    component: ChartsComponent,
+    data: {title: 'Graphiques'},
+    canActivate: [AuthGuard]
+  }
 ];
 
 @NgModule({
