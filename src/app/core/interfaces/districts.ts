@@ -11,3 +11,11 @@ interface IPricesList {
     prix_min: number;
   }
 }
+
+export interface IPriceInflation {
+  districtName: string;
+  districtCode: string;
+  priceInflationAsPercent: number;
+  priceInflationAsEuros: number;
+  time: number;
+}

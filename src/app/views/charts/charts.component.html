@@ -1,7 +1,17 @@
 <div fxLayoutAlign="center center" *ngIf="loading">
   <mat-spinner></mat-spinner>
 </div>
+<mat-card style="background-color: rgba(255, 245, 145, 0.5);">
+  <mat-card-content>
+    <p>Des données plus complètes arriveront bientôt.</p>
+  </mat-card-content>
+</mat-card>
+
 <mat-card>
-  <mat-card-title>Données</mat-card-title>
-  <mat-card-content>Charts</mat-card-content>
+  <mat-card-title>Données d'inflation (sur les prix moyens au m²)</mat-card-title>
+  <mat-card-content>
+    <p *ngFor="let inflation of priceInflation">
+      <b>+{{inflation.priceInflationAsPercent}}%</b> (soit {{inflation.priceInflationAsEuros}}€) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
+    </p>
+  </mat-card-content>
 </mat-card>
