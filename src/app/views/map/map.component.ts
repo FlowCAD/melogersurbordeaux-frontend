@@ -7,10 +7,11 @@ import { Map, MapOptions, latLng, tileLayer, TileLayer, geoJSON, circleMarker, C
 import Geocoder from 'leaflet-control-geocoder';
 
 import { ApartService } from '@core/services/apart.service';
+import { DistrictService } from '@core/services/district.service';
 import { MapService } from '@core/services/map.service';
 import { CryptoService } from '@core/services/crypto.service';
 
-import { Apart } from '@core/interfaces';
+import { Apart, IDistrict } from '@core/interfaces';
 import { MARKER_ICON, OSM_ATTRIBUTION } from '@core/constants';
 
 @Component({
@@ -35,6 +36,7 @@ export class MapComponent implements OnInit {
     private http: HttpClient,
     private _router: Router,
     private _apartService: ApartService,
+    private _districtService: DistrictService,
     private _mapService: MapService,
     private _crypto: CryptoService
   ) {
@@ -147,13 +149,31 @@ export class MapComponent implements OnInit {
   private async _displayDistrictsLayer() {
     try {
       const districtsList: any = await this.http.get('assets/geojsons/districts.geojson').toPromise();
+      const districtsPricesList: IDistrict[] = await this._districtService.getDistrictList().toPromise();
+
+      districtsList.features.forEach((item: any) => {
+        const districtPrices = districtsPricesList.find(districtPrices => (districtPrices.code === item.properties.ma_code));
+        if (districtPrices && districtPrices.prices) {
+          const lastKey = Object.keys(districtPrices.prices)[Object.keys(districtPrices.prices).length - 1];
+          item.properties.prices = districtPrices.prices[lastKey];
+          item.properties.pricesUpdate = lastKey;
+        }
+      })
       this.layersControl.overlays = {
         ...this.layersControl.overlays,
         'Quartiers': geoJSON(
           districtsList,
           {
             style: { 'color': '#ff7800', 'weight': 2, 'opacity': 0.5 },
-            onEachFeature: (feature, layer) => layer.bindPopup(`<i>${feature.properties.nom}</i>`)
+            onEachFeature: (feature, layer) => {
+              let popupContent = `<b>${feature.properties.nom}</b>`;
+              if (feature.properties.prices) {
+                popupContent += `<br><br>Prix au m&#178; moyen: <b>${feature.properties.prices.prix_moy}€</b><br>`;
+                popupContent += `(min: ${feature.properties.prices.prix_min} / max: ${feature.properties.prices.prix_max})`;
+                popupContent += `<br><br><i style="color:grey">mise à jour ${feature.properties.pricesUpdate}</i>`;
+              };
+              layer.bindPopup(popupContent);
+            }
           }
         )
       };
