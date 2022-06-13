@@ -243,9 +243,24 @@
           </td>
           <td>
             <mat-form-field class="full-width">
+              <mat-label>Taxe foncière</mat-label>
+              <input matInput type="number" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.propertyTax" name="propertyTax">
+              <span matSuffix>&nbsp;€</span>
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
               <mat-label>Nombre de lots</mat-label>
               <input matInput type="number" [disabled]="mode === 'normal'"
                     [(ngModel)]="apart.numberOfLots" name="numberOfLots">
+            </mat-form-field>
+          </td>
+          <td>
+            <mat-form-field class="full-width">
+              <mat-label>Année de construction</mat-label>
+              <input matInput type="number" [disabled]="mode === 'normal'"
+                    [(ngModel)]="apart.yearOfConstruction" name="yearOfConstruction">
             </mat-form-field>
           </td>
         </tr>

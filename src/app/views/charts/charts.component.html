@@ -11,7 +11,7 @@
   <mat-card-title>Données d'inflation (sur les prix moyens au m²)</mat-card-title>
   <mat-card-content>
     <p *ngFor="let inflation of priceInflation">
-      <b>+{{inflation.priceInflationAsPercent}}%</b> (soit {{inflation.priceInflationAsEuros}}€) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
+      <b>+{{inflation.priceInflationAsPercent}}%</b> (soit +{{inflation.priceInflationAsEuros}}€ au m²) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
     </p>
   </mat-card-content>
 </mat-card>

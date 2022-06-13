@@ -7,7 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
 import { ApartService } from '@core/services/apart.service';
-import { IApart, Apart } from '@core/interfaces';
+import { Apart } from '@core/interfaces';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
 import { DISTRICTS, STATES_ARRAY } from '@core/constants';
@@ -101,7 +101,7 @@ export class FormComponent implements OnInit {
 
   public save() {
     this.loading = true;
-    let api: Observable<IApart>;
+    let api: Observable<Apart>;
 
     if (this.mode === 'creation') {
       this.apart = {...this.apart, createdBy: localStorage.getItem('userName') || 'admin'};

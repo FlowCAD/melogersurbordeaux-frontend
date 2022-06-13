@@ -26,7 +26,9 @@ export interface IApart {
   parking?: boolean;
   bikeParking?: boolean;
   annualCondominiumFees?: number;
+  propertyTax?: number;
   numberOfLots?: number;
+  yearOfConstruction?: number;
   description?: string;
   image?: string;
   comments: IComment[];
@@ -68,7 +70,9 @@ export class Apart {
   public parking?: boolean;
   public bikeParking?: boolean;
   public annualCondominiumFees?: number;
+  public propertyTax?: number;
   public numberOfLots?: number;
+  public yearOfConstruction?: number;
   public description?: string;
   public image?: string;
   public comments: IComment[];
