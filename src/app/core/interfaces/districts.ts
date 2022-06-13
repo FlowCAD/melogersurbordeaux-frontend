@@ -5,11 +5,13 @@ export interface IDistrict {
 }
 
 interface IPricesList {
-  [key: string]: {
-    prix_moy: number;
-    prix_max: number;
-    prix_min: number;
-  }
+  [key: string]: IPricesItem
+}
+
+export interface IPricesItem {
+  prix_moy: number;
+  prix_max: number;
+  prix_min: number;
 }
 
 export interface IPriceInflation {

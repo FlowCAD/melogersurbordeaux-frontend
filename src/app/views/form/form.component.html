@@ -76,6 +76,10 @@
               <mat-hint align="end" *ngIf="['creation', 'edition'].includes(mode)">
                 Champ calculé automatiquement (requis: Prix et Surface)
               </mat-hint>
+              <mat-hint align="start" *ngIf="mode === 'normal' && districtPriceMsg">
+                <mat-icon [style.color]="districtPriceColor ? districtPriceColor : 'black'">info</mat-icon>
+                {{districtPriceMsg}}
+              </mat-hint>
             </mat-form-field>
           </td>
           <td>
@@ -105,7 +109,7 @@
           <td>
             <mat-form-field class="full-width">
               <mat-label>Quartier</mat-label>
-              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.district" name="district">
+              <mat-select [disabled]="mode === 'normal'" [(ngModel)]="apart.district" name="district" (ngModelChange)="onChangeDistrict()">
                 <mat-option *ngFor="let val of districtsObject" [value]="val.key">{{val.value}}</mat-option>
               </mat-select>
             </mat-form-field>

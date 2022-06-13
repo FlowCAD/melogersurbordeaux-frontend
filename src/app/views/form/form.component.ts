@@ -7,7 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 
 import { ApartService } from '@core/services/apart.service';
-import { Apart } from '@core/interfaces';
+import { DistrictService } from '@core/services/district.service';
+import { Apart, IDistrict, IPricesItem } from '@core/interfaces';
 import { FormCommentDialogComponent } from '@views/form/form-comment-dialog.component';
 import { FormMapDialogComponent } from '@views/form/form-map-dialog.component';
 import { DISTRICTS, STATES_ARRAY } from '@core/constants';
@@ -29,6 +30,9 @@ export class FormComponent implements OnInit {
   public expositions: string[];
   public diagValues: string[];
   public commentPanelOpenState: boolean = false;
+  public districtPriceMsg: string;
+  public districtPriceColor: string | null;
+  private districtPriceInfo: IPricesItem;
   private apartBackup!: Apart;
 
   constructor(
@@ -37,6 +41,7 @@ export class FormComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _apartService: ApartService,
+    private _districtService: DistrictService,
     private _snackBar: MatSnackBar
   ) {
     this.types = ['T2', 'T2-Bis', 'T3', 'T3-Bis', 'T4'];
@@ -44,6 +49,9 @@ export class FormComponent implements OnInit {
     this.exteriorOptions = ['Terasse', 'Balcon', 'Loggia', 'Jardin', 'Autre', 'Aucun'];
     this.expositions = ['Sud', 'Est', 'Nord', 'Ouest', 'Nord-Sud', 'Est-Ouest', 'Sud-Ouest', 'Sud-Est', 'Autre'];
     this.diagValues = [...'ABCDE'];
+    this.districtPriceMsg = '';
+    this.districtPriceColor = null;
+    this.districtPriceInfo = {} as IPricesItem;
   }
 
   ngOnInit(): void {
@@ -78,6 +86,10 @@ export class FormComponent implements OnInit {
   public onChangePrice() {
     this._computePriceBySurface();
     this.apart.notaryFees = this.apart.price * 9 / 100;
+  }
+
+  public onChangeDistrict() {
+    this._getPriceBySurfaceByDistrict();
   }
 
   public onChangeSurface() {
@@ -150,6 +162,7 @@ export class FormComponent implements OnInit {
     this._apartService.getApart(this.pk).subscribe(
       (res: Apart) => {
         this.apart = res;
+        this._getPriceBySurfaceByDistrict();
         this.loading = false;
       },
       err => {
@@ -168,6 +181,42 @@ export class FormComponent implements OnInit {
     const priceToConsider = this.apart.price - (this.apart.parking ? 10000 : 0);
     const priceBySurface = priceToConsider / this.apart.surface;
     this.apart.priceBySurface = Math.round(priceBySurface * 100) / 100;
+  }
+
+  private async _getPriceBySurfaceByDistrict() {
+    if (!this.apart.district) return
+
+    const districtsPricesList: IDistrict[] = await this._districtService.getDistrictList().toPromise();
+    const districtPrices: (IDistrict | undefined) = districtsPricesList.find((districtPrices: IDistrict) => {
+      if (this.apart.district === 'saint_genes') {
+        return (districtPrices.code === 'nansouty');
+      } else {
+        return (districtPrices.code === this.apart.district);
+      }
+    });
+    if (districtPrices && districtPrices.prices) {
+      const lastKey = Object.keys(districtPrices.prices)[Object.keys(districtPrices.prices).length - 1];
+      this.districtPriceInfo = districtPrices.prices[lastKey];
+      this._handlePriceBySurfaceInfo();
+    }
+  }
+
+  private _handlePriceBySurfaceInfo() {
+    if (!this.apart.priceBySurface) return
+
+    this.districtPriceMsg = '';
+    this.districtPriceColor = null;
+
+    if (this.apart.priceBySurface > this.districtPriceInfo.prix_moy + 100) {
+      this.districtPriceMsg = `Prix au m² supérieur à la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceColor = 'red';
+    } else if (this.apart.priceBySurface < this.districtPriceInfo.prix_moy - 100) {
+      this.districtPriceMsg = `Prix au m² inférieur à la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceColor = 'green';
+    } else {
+      this.districtPriceMsg = `Prix au m² dans la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceColor = 'yellow';
+    }
   }
 
 }

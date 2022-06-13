@@ -22,6 +22,6 @@ export const DISTRICTS = [
   { index: 5, key: 'villa_primerose_parc_bordelais_cauderan', value: 'Villa Primerose \/ Parc Bordelais \/ Caudéran'},
   { index: 6, key: 'saint_seurin_fondaudege', value: 'Saint Seurin \/ Fondaudège'},
   { index: 7, key: 'hotel_de_ville_quinconces', value: 'Hotel de Ville \/ Quinconces (hypercentre)'},
-  { index: 8, key: 'chartrons', value: 'Chartrons'},
+  { index: 8, key: 'chartrons_grand_parc', value: 'Chartrons'},
   { index: 9, key: 'other', value: 'Autre'}
 ];
