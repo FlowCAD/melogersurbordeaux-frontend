@@ -77,7 +77,8 @@
                 Champ calculé automatiquement (requis: Prix et Surface)
               </mat-hint>
               <mat-hint align="start" *ngIf="mode === 'normal' && districtPriceMsg">
-                <mat-icon [style.color]="districtPriceColor ? districtPriceColor : 'black'">info</mat-icon>
+                <mat-icon [style.color]="districtPriceColor ? districtPriceColor : 'black'"
+                          [matTooltip]="districtPriceTooltip">info</mat-icon>
                 {{districtPriceMsg}}
               </mat-hint>
             </mat-form-field>

@@ -30,6 +30,7 @@ export class FormComponent implements OnInit {
   public expositions: string[];
   public diagValues: string[];
   public commentPanelOpenState: boolean = false;
+  public districtPriceTooltip: string;
   public districtPriceMsg: string;
   public districtPriceColor: string | null;
   private districtPriceInfo: IPricesItem;
@@ -49,6 +50,7 @@ export class FormComponent implements OnInit {
     this.exteriorOptions = ['Terasse', 'Balcon', 'Loggia', 'Jardin', 'Autre', 'Aucun'];
     this.expositions = ['Sud', 'Est', 'Nord', 'Ouest', 'Nord-Sud', 'Est-Ouest', 'Sud-Ouest', 'Sud-Est', 'Autre'];
     this.diagValues = [...'ABCDE'];
+    this.districtPriceTooltip = '';
     this.districtPriceMsg = '';
     this.districtPriceColor = null;
     this.districtPriceInfo = {} as IPricesItem;
@@ -197,8 +199,13 @@ export class FormComponent implements OnInit {
     if (districtPrices && districtPrices.prices) {
       const lastKey = Object.keys(districtPrices.prices)[Object.keys(districtPrices.prices).length - 1];
       this.districtPriceInfo = districtPrices.prices[lastKey];
+      this._setDistrictPriceTooltipMsg();
       this._handlePriceBySurfaceInfo();
     }
+  }
+
+  private _setDistrictPriceTooltipMsg() {
+    this.districtPriceTooltip = `Prix min/max (€/m²): ${this.districtPriceInfo.prix_min} / ${this.districtPriceInfo.prix_max}`;
   }
 
   private _handlePriceBySurfaceInfo() {
@@ -206,15 +213,16 @@ export class FormComponent implements OnInit {
 
     this.districtPriceMsg = '';
     this.districtPriceColor = null;
+    const districtMidPriceInfo: string = `${this.districtPriceInfo.prix_moy}€/m²)`;
 
     if (this.apart.priceBySurface > this.districtPriceInfo.prix_moy + 100) {
-      this.districtPriceMsg = `Prix au m² supérieur à la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceMsg = `Prix au m² supérieur à la moyenne (${districtMidPriceInfo})`;
       this.districtPriceColor = 'red';
     } else if (this.apart.priceBySurface < this.districtPriceInfo.prix_moy - 100) {
-      this.districtPriceMsg = `Prix au m² inférieur à la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceMsg = `Prix au m² inférieur à la moyenne (${districtMidPriceInfo})`;
       this.districtPriceColor = 'green';
     } else {
-      this.districtPriceMsg = `Prix au m² dans la moyenne (${this.districtPriceInfo.prix_moy}€/m²)`;
+      this.districtPriceMsg = `Prix au m² dans la moyenne (${districtMidPriceInfo})`;
       this.districtPriceColor = 'yellow';
     }
   }
