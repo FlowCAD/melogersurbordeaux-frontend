@@ -1,5 +1,6 @@
 export const STATES = {
   new : { label: 'Nouveau', color: 'primary' } ,
+  'in-progress': { label: 'A discuter', color: 'accent' } ,
   accepted: { label: 'A visiter', color: 'accent' } ,
   refused: { label: 'Refusé', color: 'grey' } ,
   selled: { label: 'Vendu', color: 'grey' }
