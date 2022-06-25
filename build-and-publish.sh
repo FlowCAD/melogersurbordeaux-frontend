@@ -10,10 +10,10 @@ rm -rf *
 cd -
 
 echo "\n---> Building Angular Package\n"
-ng build --c=production --delete-output-path
+ng build --c=production
 
 echo "\n---> Moving Package's Files\n"
-cp -R ./dist/melogersurbordeaux/. ../backend/public/
+cp -R ./dist/. ../backend/public/
 
 echo "\n---> Publishing Package\n"
 cd ../backend
