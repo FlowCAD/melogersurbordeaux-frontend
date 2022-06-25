@@ -24,6 +24,7 @@ export class ChartsComponent implements OnInit {
   public selectedDistrict: string = '';
 
   public chartOption!: EChartsOption;
+  public chartOption2!: EChartsOption;
 
   constructor(
     private _districtService: DistrictService
@@ -46,8 +47,8 @@ export class ChartsComponent implements OnInit {
 
     this.districtsList = await this._districtService.getDistrictList().toPromise();
     this.loading = false;
-    console.log(this.districtsList);
     this._computePriceInflation();
+    this._displayPriceEvolutionByDistrict();
   }
 
   private _computePriceInflation() {
@@ -67,6 +68,69 @@ export class ChartsComponent implements OnInit {
         time: Object.keys(district.prices).length
       });
     })
+  }
+
+  /**
+   * Display month by month, the price evolution of all the districts side by side
+   */
+  private _displayPriceEvolutionByDistrict() {
+    const priceEvolutionByDistrictList: IPriceEvolutionByDistrict[] = [];
+    this.districtsList.forEach((district: IDistrict) => {
+      if (!district.prices) return;
+
+
+      const priceEvolutionByDistrict: IPriceEvolutionByDistrict = {
+        districtName: district.label,
+        priceMinList: [],
+        priceMaxList: [],
+        priceMoyList: []
+      };
+
+      Object.keys(district.prices).forEach((dateCode: string) => {
+        if (!district.prices) return;
+        const priceItem: IPricesItem = district.prices[dateCode];
+        priceEvolutionByDistrict.priceMinList.push(priceItem.prix_min);
+        priceEvolutionByDistrict.priceMaxList.push(priceItem.prix_max);
+        priceEvolutionByDistrict.priceMoyList.push(priceItem.prix_moy);
+      });
+
+      priceEvolutionByDistrictList.push(priceEvolutionByDistrict);
+    });
+
+    debugger
+    this.chartOption2 = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+          label: { backgroundColor: '#6a7985'}
+        }
+      },
+      legend: {
+        data: priceEvolutionByDistrictList.map(evol => evol.districtName),
+        top: 'top'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: this._convertDateCodeListToReadableDateList(this._getDateList()),
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Prix au m²',
+        min: 4000,
+        axisLabel: {
+          formatter: (value: number) => `${value}€`
+        }
+      },
+      series: priceEvolutionByDistrictList.map(evol => { return { name: evol.districtName, type: 'line', data: evol.priceMoyList }})
+    };
   }
 
   /**
@@ -147,13 +211,27 @@ export class ChartsComponent implements OnInit {
   }
 
   /**
+   * Get the exhaustive list of dates (YYYYMM format) available in the districtsList
+   */
+   private _getDateList(): string[] {
+    let dateList: string[] = [];
+
+    this.districtsList.forEach(district => {
+      if(!district.prices) return;
+      Object.keys(district.prices).forEach(date => {
+        if(dateList.includes(date)) return;
+        dateList.push(date);
+      })
+    });
+    return dateList;
+  }
+
+  /**
    * Convert a list of date codes (YYYYMM format) to a list of readable dates (MM/YYYY)
    * @param dateCode List of date codes
    */
   private _convertDateCodeListToReadableDateList(dateCode: string[]): string[] {
-    return dateCode.map((date: string) => {
-      return `${date.slice(4, 6)}/${date.slice(0, 4)}`;
-    });
+    return dateCode.map((date: string) => `${date.slice(4, 6)}/${date.slice(0, 4)}`);
   }
 
   get loadingOpts(): Object {
