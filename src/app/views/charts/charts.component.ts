@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 import { DistrictService } from '@core/services/district.service';
-import { IDistrict, IPriceInflation } from '@core/interfaces';
+import { IDistrict, IPriceInflation, IPricesItem } from '@core/interfaces';
+
+import { EChartsOption } from 'echarts';
+
+interface IPriceEvolutionByDistrict {
+  districtName: string;
+  priceMinList: number[];
+  priceMaxList: number[];
+  priceMoyList: number[];
+}
 
 @Component({
   selector: 'app-charts',
@@ -12,6 +21,9 @@ export class ChartsComponent implements OnInit {
   public loading: boolean;
   public districtsList: IDistrict[];
   public priceInflation: IPriceInflation[];
+  public selectedDistrict: string = '';
+
+  public chartOption!: EChartsOption;
 
   constructor(
     private _districtService: DistrictService
@@ -25,11 +37,16 @@ export class ChartsComponent implements OnInit {
     this._getDistrictList();
   }
 
+  public onChangeSelectedDistrict(districtCode: string) {
+    this._computePriceEvolutionForSpecificDistrict(districtCode);
+  }
+
   private async _getDistrictList() {
     this.loading = true;
 
     this.districtsList = await this._districtService.getDistrictList().toPromise();
     this.loading = false;
+    console.log(this.districtsList);
     this._computePriceInflation();
   }
 
@@ -52,4 +69,100 @@ export class ChartsComponent implements OnInit {
     })
   }
 
+  /**
+   * Compute price evolution (min/max/moy) of a district month by month
+   *  and display it in a chart
+   * @param districtCode District code
+   */
+  private _computePriceEvolutionForSpecificDistrict(districtCode: string) {
+    const district = this.districtsList.find((district: IDistrict) => district.code === districtCode);
+    if (!district || !district.prices || Object.keys(district.prices).length === 0) return;
+
+    const readableDateList = this._convertDateCodeListToReadableDateList(Object.keys(district.prices));
+
+    const priceEvolutionByDistrict: IPriceEvolutionByDistrict = {
+      districtName: district.label,
+      priceMinList: [],
+      priceMaxList: [],
+      priceMoyList: []
+    };
+
+    Object.keys(district.prices).forEach((dateCode: string) => {
+      if (!district.prices) return;
+      const priceItem: IPricesItem = district.prices[dateCode];
+      priceEvolutionByDistrict.priceMinList.push(priceItem.prix_min);
+      priceEvolutionByDistrict.priceMaxList.push(priceItem.prix_max);
+      priceEvolutionByDistrict.priceMoyList.push(priceItem.prix_moy);
+    });
+
+    this.chartOption = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+          label: { backgroundColor: '#6a7985'}
+        }
+      },
+      legend: {
+        data: ['Prix min', 'Prix moy', 'Prix max'],
+        top: 'top'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: readableDateList,
+      },
+      yAxis: {
+        type: 'value',
+        name: 'Prix au m²',
+        min: 2500,
+        axisLabel: {
+          formatter: (value: number) => `${value}€`
+        },
+      },
+      series: [
+        {
+          name: 'Prix mini',
+          type: 'line',
+          data: priceEvolutionByDistrict.priceMinList
+        },
+        {
+          name: 'Prix moyen',
+          type: 'line',
+          data: priceEvolutionByDistrict.priceMoyList
+        },
+        {
+          name: 'Prix maxi',
+          type: 'line',
+          data: priceEvolutionByDistrict.priceMaxList
+        }
+      ]
+    };
+  }
+
+  /**
+   * Convert a list of date codes (YYYYMM format) to a list of readable dates (MM/YYYY)
+   * @param dateCode List of date codes
+   */
+  private _convertDateCodeListToReadableDateList(dateCode: string[]): string[] {
+    return dateCode.map((date: string) => {
+      return `${date.slice(4, 6)}/${date.slice(0, 4)}`;
+    });
+  }
+
+  get loadingOpts(): Object {
+    return {
+      text: 'Chargement...',
+      color: 'light-blue',
+      textColor: 'dark-blue',
+      maskColor: 'rgba(255, 255, 255, 0.8)',
+      zlevel: 0
+    };
+  }
 }

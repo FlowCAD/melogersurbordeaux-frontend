@@ -7,11 +7,29 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card>
-  <mat-card-title>Données d'inflation (sur les prix moyens au m²)</mat-card-title>
-  <mat-card-content>
-    <p *ngFor="let inflation of priceInflation">
-      <b>+{{inflation.priceInflationAsPercent}}%</b> (soit +{{inflation.priceInflationAsEuros}}€ au m²) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
-    </p>
-  </mat-card-content>
-</mat-card>
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10">
+  <mat-card fxFlex="40%">
+    <mat-card-title>Données d'inflation (sur les prix moyens au m²)</mat-card-title>
+    <mat-card-content>
+      <p *ngFor="let inflation of priceInflation">
+        <b>+{{inflation.priceInflationAsPercent}}%</b> (soit +{{inflation.priceInflationAsEuros}}€ au m²) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
+      </p>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card fxFlex="50%">
+    <mat-card-title>Tendances des prix au m² sur un quartier</mat-card-title>
+    <mat-card-content>
+      <mat-form-field class="full-width">
+        <mat-label>Quartier sélectionné</mat-label>
+        <mat-select [(ngModel)]="selectedDistrict" name="selectedDistrict"
+                    (ngModelChange)="onChangeSelectedDistrict($event)">
+          <mat-option *ngFor="let district of districtsList" [value]="district.code">{{district.label}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div echarts [options]="chartOption" style="height: 400px"
+           [loading]="true" [loadingOpts]="loadingOpts"
+           *ngIf="selectedDistrict"></div>
+    </mat-card-content>
+  </mat-card>
+</div>

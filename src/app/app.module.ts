@@ -12,6 +12,7 @@ import { environment } from '../environments/environment';
 
 import { MaterialModule } from './material.module';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 import { AuthGuard } from '@core/auth.guard';
 
@@ -66,6 +67,9 @@ registerLocaleData(localeFr, 'fr');
     AppRoutingModule,
     MaterialModule,
     LeafletModule,
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
   ],
   providers: [
     AuthGuard,

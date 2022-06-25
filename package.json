@@ -23,9 +23,12 @@
     "@angular/router": "~12.2.0",
     "@angular/service-worker": "~12.2.0",
     "@asymmetrik/ngx-leaflet": "^8.1.0",
+    "@types/echarts": "^4.9.15",
     "crypto-js": "^4.1.1",
+    "echarts": "^5.3.3",
     "leaflet": "^1.7.1",
     "leaflet-control-geocoder": "^2.4.0",
+    "ngx-echarts": "^7.1.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
