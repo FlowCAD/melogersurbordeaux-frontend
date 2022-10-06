@@ -88,7 +88,7 @@ export class ChartsComponent implements OnInit {
         time: Object.keys(district.prices).length
       });
     })
-    return priceInflation;
+    return priceInflation.sort((a, b) => Number(a.priceInflationAsPercent) - Number(b.priceInflationAsPercent));
   }
 
   private _convertNumberAsNumberWithSign(number: number): string {
