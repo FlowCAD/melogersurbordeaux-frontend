@@ -12,6 +12,11 @@ interface IPriceEvolutionByDistrict {
   priceMoyList: number[];
 }
 
+interface IPercentEvolutionOfPriceByDistrict {
+  district: string;
+  evolution: number[];
+}
+
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
@@ -26,6 +31,7 @@ export class ChartsComponent implements OnInit {
 
   public chartOption!: EChartsOption;
   public chartOption2!: EChartsOption;
+  public chartOption3!: EChartsOption;
 
   constructor(
     private _districtService: DistrictService
@@ -52,6 +58,7 @@ export class ChartsComponent implements OnInit {
     this.priceInflation = this._computePriceInflation();
     this.lastMonthPriceInflation = this._computePriceInflation(1);
     this._displayPriceEvolutionByDistrict();
+    this._displayPricePercentEvolutionByDistrict();
   }
 
   private _computePriceInflation(duration?: number): IPriceInflation[] {
@@ -93,6 +100,9 @@ export class ChartsComponent implements OnInit {
       case 1:
         text = `+${number}`;
         break;
+      case 0:
+        text = `${number}`;
+        break;
       default:
         text = 'N/A';
         break;
@@ -107,7 +117,6 @@ export class ChartsComponent implements OnInit {
     const priceEvolutionByDistrictList: IPriceEvolutionByDistrict[] = [];
     this.districtsList.forEach((district: IDistrict) => {
       if (!district.prices) return;
-
 
       const priceEvolutionByDistrict: IPriceEvolutionByDistrict = {
         districtName: district.label,
@@ -236,6 +245,71 @@ export class ChartsComponent implements OnInit {
           data: priceEvolutionByDistrict.priceMaxList
         }
       ]
+    };
+  }
+
+  /**
+   * Display month by month, the price percentage evolution of all the districts side by side
+   */
+  private _displayPricePercentEvolutionByDistrict() {
+    const pricePercentEvolutionByDistrictList: IPercentEvolutionOfPriceByDistrict[] = [];
+    this.districtsList.forEach((district: IDistrict) => {
+      if (!district.prices) return;
+
+      const pricePercentEvolutionByDistrict: IPercentEvolutionOfPriceByDistrict = {
+        district: district.label,
+        evolution: []
+      };
+
+      let prevObj: IPricesItem;
+      Object.keys(district.prices).forEach((dateCode: string, index: number) => {
+        if (!district.prices) return;
+
+        const curObj = district.prices[dateCode];
+        if (index === 0) {
+          pricePercentEvolutionByDistrict.evolution.push(0);
+          prevObj = {...curObj};
+        } else {
+          const percMoy: number = +((curObj.prix_moy * 100 / prevObj.prix_moy) - 100).toFixed(2);
+          pricePercentEvolutionByDistrict.evolution.push(percMoy);
+          prevObj = {...curObj};
+        }
+      });
+
+      pricePercentEvolutionByDistrictList.push(pricePercentEvolutionByDistrict);
+    });
+
+    this.chartOption3 = {
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+          label: { backgroundColor: '#6a7985'}
+        }
+      },
+      legend: {
+        data: pricePercentEvolutionByDistrictList.map(evol => evol.district),
+        top: 'top'
+      },
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: this._convertDateCodeListToReadableDateList(this._getDateList()),
+      },
+      yAxis: {
+        type: 'value',
+        name: '%',
+        axisLabel: {
+          formatter: (value: number) => `${this._convertNumberAsNumberWithSign(value)}%`
+        }
+      },
+      series: pricePercentEvolutionByDistrictList.map(evol => { return { name: evol.district, type: 'line', data: evol.evolution }})
     };
   }
 

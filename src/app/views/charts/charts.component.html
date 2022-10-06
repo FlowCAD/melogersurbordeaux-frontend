@@ -46,3 +46,13 @@
     </mat-card-content>
   </mat-card>
 </div>
+
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10">
+  <mat-card fxFlex="60%">
+    <mat-card-title>Fluctuation (en %, mois par mois) des prix moyen au m² sur la ville</mat-card-title>
+    <mat-card-content>
+      <div echarts [options]="chartOption3" style="height: 600px"
+           [loading]="true" [loadingOpts]="loadingOpts"></div>
+    </mat-card-content>
+  </mat-card>
+</div>
