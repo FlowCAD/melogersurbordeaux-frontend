@@ -4,6 +4,9 @@ echo "---------------------------------------------------------\n"
 echo "------------RUNNING BUILD AND PUBLISH SCRIPT!------------\n"
 echo "---------------------------------------------------------\n"
 
+echo "\n---> Login to Heroku"
+heroku login
+
 echo "\n---> Cleaning output folder\n"
 cd ../backend/public/
 rm -rf *
