@@ -3,11 +3,19 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="60">
-  <mat-card fxFlex="40%">
-    <mat-card-title>Données d'inflation (sur les prix moyens au m²)</mat-card-title>
+  <mat-card fxFlex="45%">
+    <mat-card-title>Données d'inflation du mois courant (sur les prix moyens au m²)</mat-card-title>
     <mat-card-content>
-      <p *ngFor="let inflation of priceInflation">
-        <b>+{{inflation.priceInflationAsPercent}}%</b> (soit +{{inflation.priceInflationAsEuros}}€ au m²) pour le <b>quartier {{inflation.districtName}}</b> (sur {{inflation.time}} mois)
+      <p *ngFor="let inflation of lastMonthPriceInflation" style="text-align: left; margin-left: 100px">
+        {{inflation.districtName}}: <b>{{inflation.priceInflationAsPercent}}%</b> (soit {{inflation.priceInflationAsEuros}}€ au m²)
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <mat-card fxFlex="45%">
+    <mat-card-title>Données d'inflation des {{priceInflation.length -1}} derniers mois (sur les prix moyens au m²)</mat-card-title>
+    <mat-card-content>
+      <p *ngFor="let inflation of priceInflation" style="text-align: left; margin-left: 100px">
+        {{inflation.districtName}}: <b>{{inflation.priceInflationAsPercent}}%</b> (soit {{inflation.priceInflationAsEuros}}€ au m²)
       </p>
     </mat-card-content>
   </mat-card>

@@ -17,7 +17,7 @@ export interface IPricesItem {
 export interface IPriceInflation {
   districtName: string;
   districtCode: string;
-  priceInflationAsPercent: number;
-  priceInflationAsEuros: number;
+  priceInflationAsPercent: string;
+  priceInflationAsEuros: string;
   time: number;
 }

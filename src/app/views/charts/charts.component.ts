@@ -21,6 +21,7 @@ export class ChartsComponent implements OnInit {
   public loading: boolean;
   public districtsList: IDistrict[];
   public priceInflation: IPriceInflation[];
+  public lastMonthPriceInflation: IPriceInflation[];
   public selectedDistrict: string = '';
 
   public chartOption!: EChartsOption;
@@ -32,6 +33,7 @@ export class ChartsComponent implements OnInit {
     this.loading = false;
     this.districtsList = [];
     this.priceInflation = [];
+    this.lastMonthPriceInflation = [];
   }
 
   ngOnInit(): void {
@@ -47,27 +49,55 @@ export class ChartsComponent implements OnInit {
 
     this.districtsList = await this._districtService.getDistrictList().toPromise();
     this.loading = false;
-    this._computePriceInflation();
+    this.priceInflation = this._computePriceInflation();
+    this.lastMonthPriceInflation = this._computePriceInflation(1);
     this._displayPriceEvolutionByDistrict();
   }
 
-  private _computePriceInflation() {
+  private _computePriceInflation(duration?: number): IPriceInflation[] {
+    const priceInflation: IPriceInflation[] = [];
+
     this.districtsList.forEach((district: IDistrict) => {
       if (!district.prices) return;
 
-      // TODO Order is not guaranteed in an object, that's why a better solution is needed
-      const olderPriceMoy = district.prices[Object.keys(district.prices)[0]].prix_moy;
-      const mostRecentPriceMoy = district.prices[Object.keys(district.prices)[Object.keys(district.prices).length - 1]].prix_moy;
+      let olderPriceMoy:number, mostRecentPriceMoy: number;
+      if (!duration) {
+        // TODO Order is not guaranteed in an object, that's why a better solution is needed
+        olderPriceMoy = district.prices[Object.keys(district.prices)[0]].prix_moy;
+        mostRecentPriceMoy = district.prices[Object.keys(district.prices)[Object.keys(district.prices).length - 1]].prix_moy;
+      } else {
+        const durationBoundedPrices = Object.keys(district.prices).slice(-(duration+1));
+        olderPriceMoy = district.prices[durationBoundedPrices[0]].prix_moy;
+        mostRecentPriceMoy = district.prices[durationBoundedPrices[durationBoundedPrices.length-1]].prix_moy;
+      }
+
       const priceInflationAsPercent = +((mostRecentPriceMoy * 100 / olderPriceMoy) - 100).toFixed(2);
       const priceInflationAsEuros = +(priceInflationAsPercent * olderPriceMoy / 100).toFixed(2);
-      this.priceInflation.push({
+      priceInflation.push({
         districtName: district.label,
         districtCode: district.code,
-        priceInflationAsPercent,
-        priceInflationAsEuros,
+        priceInflationAsPercent: this._convertNumberAsNumberWithSign(priceInflationAsPercent),
+        priceInflationAsEuros: this._convertNumberAsNumberWithSign(priceInflationAsEuros),
         time: Object.keys(district.prices).length
       });
     })
+    return priceInflation;
+  }
+
+  private _convertNumberAsNumberWithSign(number: number): string {
+    let text: string;
+    switch (Math.sign(number)) {
+      case -1:
+        text = `${number}`;
+        break;
+      case 1:
+        text = `+${number}`;
+        break;
+      default:
+        text = 'N/A';
+        break;
+    }
+    return text;
   }
 
   /**
@@ -97,7 +127,6 @@ export class ChartsComponent implements OnInit {
       priceEvolutionByDistrictList.push(priceEvolutionByDistrict);
     });
 
-    debugger
     this.chartOption2 = {
       tooltip: {
         trigger: 'axis',
