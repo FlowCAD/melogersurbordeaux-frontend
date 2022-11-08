@@ -4,15 +4,17 @@
   </span>
 
   <div fxLayout="row" fxShow="false" fxShow.gt-sm>
-    <button mat-button routerLink="/map">
-      <mat-icon>explore</mat-icon> Carte
-    </button>
-    <button mat-button routerLink="/list">
-      <mat-icon>format_list_bulleted</mat-icon> Liste
-    </button>
-    <button mat-button routerLink="/charts">
-      <mat-icon>bar_chart</mat-icon> Graphiques
-    </button>
+    <div *ngIf="auth.loggedIn()">
+      <button mat-button routerLink="/map">
+        <mat-icon>explore</mat-icon> Carte
+      </button>
+      <button mat-button routerLink="/list">
+        <mat-icon>format_list_bulleted</mat-icon> Liste
+      </button>
+      <button mat-button routerLink="/charts">
+        <mat-icon>bar_chart</mat-icon> Graphiques
+      </button>
+    </div>
 
     <div *ngIf="auth.loggedIn(); then logoutBlock else loginBlock"></div>
     <ng-template #logoutBlock>
@@ -33,15 +35,17 @@
 </mat-toolbar>
 
 <mat-menu x-position="before" #menu="matMenu">
-  <button mat-menu-item routerLink="/map">
-    <mat-icon>explore</mat-icon> Carte
-  </button>
-  <button mat-menu-item routerLink="/list">
-    <mat-icon>format_list_bulleted</mat-icon> Liste
-  </button>
-  <button mat-menu-item routerLink="/charts">
-    <mat-icon>bar_chart</mat-icon> Graphiques
-  </button>
+  <div *ngIf="auth.loggedIn()">
+    <button mat-menu-item routerLink="/map">
+      <mat-icon>explore</mat-icon> Carte
+    </button>
+    <button mat-menu-item routerLink="/list">
+      <mat-icon>format_list_bulleted</mat-icon> Liste
+    </button>
+    <button mat-menu-item routerLink="/charts">
+      <mat-icon>bar_chart</mat-icon> Graphiques
+    </button>
+  </div>
   <button mat-menu-item routerLink="/login" *ngIf="!auth.loggedIn()">
     <mat-icon>power_settings_new</mat-icon> Connexion
   </button>

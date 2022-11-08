@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { AuthService } from '@core/services/auth.service';
 
@@ -7,15 +7,12 @@ import { AuthService } from '@core/services/auth.service';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.css']
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent {
   public title: string = "Meloger.com";
 
   constructor(
     public auth: AuthService
   ) { }
-
-  ngOnInit(): void {
-  }
 
   public logout(): void {
     this.auth.logoutUser();
