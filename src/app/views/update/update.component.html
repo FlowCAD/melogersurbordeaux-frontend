@@ -1,0 +1,54 @@
+<mat-card fxLayoutAlign="center center">
+  <form #districtForm="ngForm" class="form" (ngSubmit)="save()" *ngIf="!loading">
+    <mat-card-title>Mise à jour manuelle des données de prix par quartier</mat-card-title>
+    <mat-card-subtitle>Lorsque le système d'update auto via scraping est dysfonctionnel, merci d'utiliser ce formulaire pour mettre à jour manuellement les informations de prix par quartier.</mat-card-subtitle>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!districtForm.form.valid">Enregistrer</button>
+    </mat-card-actions>
+    <mat-card-content>
+      <table class="full-width" cellspacing="0">
+        <tr>
+          <td>
+            <mat-form-field style="width: 15%;">
+              <mat-label>Date à modifier (au format AAAAMM)</mat-label>
+              <input matInput type="string" placeholder="202211" pattern="\d{6}" required
+                     [(ngModel)]="selectedDateToUpdate" name="selectedDateToUpdate">
+              <mat-error>Merci de respecter le format spécifié.</mat-error>
+            </mat-form-field>
+          </td>
+        </tr>
+        <div *ngIf="selectedDateToUpdate && isDateToUpdateValid">
+          <tr *ngFor="let district of updatedData">
+            <td>
+              <mat-form-field class="full-width">
+                <mat-label>Quartier</mat-label>
+                <input matInput type="string" disabled [(ngModel)]="district.name" name="name_{{district.name}}">
+              </mat-form-field>
+            </td>
+            <td>
+              <a mat-icon-button matSuffix [href]="maBaseUrl + district.ma_url" target="_blank"><mat-icon>open_in_new</mat-icon></a>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-label>Prix Moyen</mat-label>
+                <input matInput type="number" required [(ngModel)]="district.added_prices.prix_moy" name="prix_moy_{{district.name}}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-label>Prix Min.</mat-label>
+                <input matInput type="number" required [(ngModel)]="district.added_prices.prix_min" name="prix_min_{{district.name}}">
+              </mat-form-field>
+            </td>
+            <td>
+              <mat-form-field class="full-width">
+                <mat-label>Prix Max.</mat-label>
+                <input matInput type="number" required [(ngModel)]="district.added_prices.prix_max" name="prix_max_{{district.name}}">
+              </mat-form-field>
+            </td>
+          </tr>
+        </div>
+      </table>
+    </mat-card-content>
+  </form>
+</mat-card>

@@ -14,6 +14,9 @@
       <button mat-button routerLink="/charts">
         <mat-icon>bar_chart</mat-icon> Graphiques
       </button>
+      <button mat-button routerLink="/update">
+        <mat-icon>edit_note</mat-icon> Mise à jour
+      </button>
     </div>
 
     <div *ngIf="auth.loggedIn(); then logoutBlock else loginBlock"></div>
@@ -44,6 +47,9 @@
     </button>
     <button mat-menu-item routerLink="/charts">
       <mat-icon>bar_chart</mat-icon> Graphiques
+    </button>
+    <button mat-menu-item routerLink="/update">
+      <mat-icon>edit_note</mat-icon> Mise à jour
     </button>
   </div>
   <button mat-menu-item routerLink="/login" *ngIf="!auth.loggedIn()">

@@ -9,6 +9,7 @@ import { ListComponent } from '@views/list/list.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
+import { UpdateComponent } from '@views/update/update.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/list', pathMatch: 'full' },
@@ -35,6 +36,12 @@ const routes: Routes = [
     path: 'charts',
     component: ChartsComponent,
     data: {title: 'Graphiques'},
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'update',
+    component: UpdateComponent,
+    data: {title: 'Mise à jour'},
     canActivate: [AuthGuard]
   }
 ];

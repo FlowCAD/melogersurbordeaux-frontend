@@ -21,3 +21,19 @@ export interface IPriceInflation {
   priceInflationAsEuros: string;
   time: number;
 }
+
+interface IMADistrict {
+  id: number;
+  code: string;
+  name: string;
+  ma_code: string;
+  ma_url: string;
+}
+
+export interface IMADistrictExtended extends IMADistrict {
+  added_prices: IPricesItem;
+}
+
+export interface IMADistrictPayload extends IMADistrict {
+  prices: IPricesList;
+}

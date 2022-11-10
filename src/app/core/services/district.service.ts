@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 
-import { IDistrict } from '@core/interfaces';
+import { IDistrict, IMADistrictPayload } from '@core/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +25,13 @@ export class DistrictService {
 
   public getDistrict(code: string): Observable<IDistrict> {
     return this.http.get<IDistrict>(`${this._serverUrl}/district/${code}`);
+  }
+
+  public updateDistrict(code: string, district: IMADistrictPayload): Observable<any> {
+    return this.http.patch<any>(`${this._serverUrl}/district/${code}`, district);
+  }
+
+  public updateAllDistricts(districts: Array<IMADistrictPayload>): Observable<any> {
+    return this.http.patch<any>(`${this._serverUrl}/district/`, districts);
   }
 }

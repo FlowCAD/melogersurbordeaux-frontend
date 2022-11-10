@@ -31,6 +31,7 @@ import { ListComponent } from '@views/list/list.component';
 import { LoginComponent } from '@views/login/login.component';
 import { MapComponent } from '@views/map/map.component';
 import { RegisterComponent } from '@views/register/register.component';
+import { UpdateComponent } from '@views/update/update.component';
 
 /** Import French local Id */
 import { DatePipe, registerLocaleData } from '@angular/common';
@@ -51,6 +52,7 @@ registerLocaleData(localeFr, 'fr');
     LoginComponent,
     MapComponent,
     RegisterComponent,
+    UpdateComponent
   ],
   imports: [
     HttpClientModule,
