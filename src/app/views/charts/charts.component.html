@@ -12,7 +12,9 @@
     </mat-card-content>
   </mat-card>
   <mat-card fxFlex="45%">
-    <mat-card-title>Données d'inflation des {{priceInflation.length -1}} derniers mois (sur les prix moyens au m²)</mat-card-title>
+    <mat-card-title>
+      Données d'inflation des {{priceInflation[0]?.time}} derniers mois (sur les prix moyens au m²)
+    </mat-card-title>
     <mat-card-content>
       <p *ngFor="let inflation of priceInflation" style="text-align: left; margin-left: 100px">
         {{inflation.districtName}}: <b>{{inflation.priceInflationAsPercent}}%</b> (soit {{inflation.priceInflationAsEuros}}€ au m²)
