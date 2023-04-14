@@ -32,14 +32,21 @@ export class UpdateComponent {
 
   public save() {
     this.loading = true;
+
+    if (localStorage.getItem('role') === "reader") {
+      this._snackBar.open('Opération non autorisée', 'OK');
+      this.loading = false;
+      return;
+    }
+
     const payload: Array<IMADistrictPayload> = [];
     this.updatedData.forEach((element: IMADistrictExtended) => {
       if (!this._hasANullPrice(element.added_prices)) {
-        const {added_prices, ...cleanedElement} = element;
+        const { added_prices, ...cleanedElement } = element;
         payload.push(
           {
             ...cleanedElement,
-            prices: {[this.selectedDateToUpdate]: {...element.added_prices}}
+            prices: { [this.selectedDateToUpdate]: { ...element.added_prices } }
           }
         )
       }
@@ -66,7 +73,7 @@ export class UpdateComponent {
     MA_DISTRICTS.forEach(district => {
       data.push({
         ...district,
-        added_prices: {prix_moy: 0, prix_max: 0, prix_min: 0}
+        added_prices: { prix_moy: 0, prix_max: 0, prix_min: 0 }
       })
     });
     return data;
@@ -76,7 +83,7 @@ export class UpdateComponent {
    * @returns date with a format like AAAAMM
    */
   private _getFormattedCurrentDate(): string {
-    const currentMonth = new Date().getMonth() +1;
+    const currentMonth = new Date().getMonth() + 1;
     const month = currentMonth < 10 ? `0${currentMonth}` : currentMonth;
     return `${new Date().getFullYear()}${month}`;
   }

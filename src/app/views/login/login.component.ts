@@ -28,7 +28,8 @@ export class LoginComponent {
   ) {
     this.userData = {
       name: '',
-      password: ''
+      password: '',
+      role: ''
     }
   }
 
@@ -40,7 +41,8 @@ export class LoginComponent {
         res => {
           this.loginValid = true;
           localStorage.setItem('token', res.token);
-          localStorage.setItem('userName', this.userData.name);
+          localStorage.setItem('userName', res.name);
+          localStorage.setItem('role', res.role || '');
           this._router.navigate(['/list']);
         },
         err => {

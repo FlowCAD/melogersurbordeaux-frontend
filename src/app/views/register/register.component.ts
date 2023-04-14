@@ -22,7 +22,8 @@ export class RegisterComponent {
   ) {
     this.userData = {
       name: '',
-      password: ''
+      password: '',
+      role: 'reader'
     }
   }
 
@@ -34,6 +35,7 @@ export class RegisterComponent {
         res => {
           localStorage.setItem('token', res.token);
           localStorage.setItem('userName', this.userData.name);
+          localStorage.setItem('role', res.role || '');
           this._router.navigate(['/list']);
         },
         err => console.error('err: ', err)

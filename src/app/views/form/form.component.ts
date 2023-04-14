@@ -25,7 +25,7 @@ export class FormComponent implements OnInit {
   public apart!: Apart;
   public types: string[];
   public states = STATES_ARRAY;
-  public districtsObject: {index: number, key: string, value: string}[];
+  public districtsObject: { index: number, key: string, value: string }[];
   public exteriorOptions: string[];
   public expositions: string[];
   public diagValues: string[];
@@ -73,7 +73,7 @@ export class FormComponent implements OnInit {
       lat: this.apart.lat,
       lon: this.apart.lon
     }
-    const dialogRef = this.dialog.open(FormMapDialogComponent, {minWidth: '500px', minHeight: '500px', data});
+    const dialogRef = this.dialog.open(FormMapDialogComponent, { minWidth: '500px', minHeight: '500px', data });
     dialogRef.afterClosed().subscribe(
       res => {
         if (res) {
@@ -104,12 +104,12 @@ export class FormComponent implements OnInit {
   }
 
   public edit() {
-    this.apartBackup = {...this.apart};
+    this.apartBackup = { ...this.apart };
     this.mode = 'edition';
   }
 
   public cancel() {
-    this.apart = {...this.apartBackup};
+    this.apart = { ...this.apartBackup };
     this.mode = 'normal';
   }
 
@@ -117,8 +117,14 @@ export class FormComponent implements OnInit {
     this.loading = true;
     let api: Observable<Apart>;
 
+    if (localStorage.getItem('role') === "reader") {
+      this._snackBar.open('Opération non autorisée', 'OK');
+      this.loading = false;
+      return;
+    }
+
     if (this.mode === 'creation') {
-      this.apart = {...this.apart, createdBy: localStorage.getItem('userName') || 'admin'};
+      this.apart = { ...this.apart, createdBy: localStorage.getItem('userName') || 'admin' };
       api = this._apartService.addApart(this.apart);
     } else if (this.mode === 'edition') api = this._apartService.updateApart(this.pk, this.apart);
     else return;
@@ -140,7 +146,7 @@ export class FormComponent implements OnInit {
 
   public getFooterText(): string {
     const id = this.apart._id;
-    const createdAt = this._datePipe.transform(this.apart.createdAt,'dd/MM/yyyy');;
+    const createdAt = this._datePipe.transform(this.apart.createdAt, 'dd/MM/yyyy');;
     const createdBy = this.apart.createdBy;
 
     return `${id} - Créé par ${createdBy} le ${createdAt}`;

@@ -9,6 +9,8 @@ import { IUser } from '@core/interfaces';
 
 interface IJwt {
   token: string;
+  name: string;
+  role: string;
 }
 
 @Injectable({
@@ -36,6 +38,7 @@ export class AuthService {
   public logoutUser(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('userName');
+    localStorage.removeItem('role');
     this._router.navigate(['/login']);
   }
 
