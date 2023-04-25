@@ -23,14 +23,14 @@ export class MapComponent implements OnInit {
 
   // Since the map is provided by an outside context, it's defined value will not be know at instantiation time.
   //  As such, we'll use the "Definite Assignment Assertion" (!) to tell TypeScript that we know this value will
-	//  be defined in some way by the time we use it; and, that TypeScript should not worry about the value until then.
+  //  be defined in some way by the time we use it; and, that TypeScript should not worry about the value until then.
   public map!: Map;
   public mapOptions: MapOptions;
   public lat: number;
   public lng: number;
-  public tileLayerWiki : TileLayer;
+  public tileLayerWiki: TileLayer;
   public layersControl: any;
-  private _circleMarkerList: {[key: string]: CircleMarker<any>} = {};
+  private _circleMarkerList: { [key: string]: CircleMarker<any> } = {};
 
   constructor(
     private http: HttpClient,
@@ -42,13 +42,13 @@ export class MapComponent implements OnInit {
   ) {
     this.lat = 44.835;
     this.lng = -0.57;
-    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION});
+    this.tileLayerWiki = tileLayer('http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png', { attribution: OSM_ATTRIBUTION });
     this.mapOptions = {
-      layers: [ this.tileLayerWiki ],
+      layers: [this.tileLayerWiki],
       zoom: 13.5,
       minZoom: 13,
       maxZoom: 18,
-      center: latLng([ this.lat, this.lng])
+      center: latLng([this.lat, this.lng])
     };
   }
 
@@ -81,6 +81,7 @@ export class MapComponent implements OnInit {
       });
 
     this._displayIsochrones();
+    this._displayDistanceBuffer();
     this._displayDistrictsLayer();
     this._displayApartMarkers();
   }
@@ -92,9 +93,9 @@ export class MapComponent implements OnInit {
   }
 
   private _initMap() {
-    const mainLayer = {'Wikimedia Maps': this.tileLayerWiki};
+    const mainLayer = { 'Wikimedia Maps': this.tileLayerWiki };
     this.layersControl = {
-      baseLayers: {...mainLayer, ...this._mapService.baseLayersList}
+      baseLayers: { ...mainLayer, ...this._mapService.baseLayersList }
     };
   }
 
@@ -131,7 +132,7 @@ export class MapComponent implements OnInit {
             .addTo(this.map)
             .on('click', () => {
               this._resetCircleMarkerListStyle();
-              currentCircleMarker.setStyle({fillColor: '#105EE5'});
+              currentCircleMarker.setStyle({ fillColor: '#105EE5' });
             })
             .bindPopup(`<a href="/list/${apart.code}">${apart.name}</a>`);
           this._circleMarkerList[apart.name] = currentCircleMarker;
@@ -200,9 +201,31 @@ export class MapComponent implements OnInit {
     }
   }
 
+  private async _displayDistanceBuffer() {
+    try {
+      const bufferObject: any = await this.http.get('assets/geojsons/buffer.geojson').toPromise()
+      this.layersControl.overlays = {
+        ...this.layersControl.overlays,
+        'Distance (m)': geoJSON(
+          bufferObject,
+          {
+            style: { 'weight': 0, 'opacity': 1 },
+            onEachFeature: (feature, layer: any) => {
+              const tooltipTxt: string = `<i>Distance inférieur à ${feature.properties.distance}m des boulevards</i>`;
+              layer.bindTooltip(tooltipTxt);
+              layer.setStyle({ fillColor: `${feature.properties.color}` });
+            }
+          }
+        )
+      };
+    } catch (err) {
+      console.error('Erreur lors de la récupération des couches de distances.', err);
+    }
+  }
+
   private _resetCircleMarkerListStyle() {
     for (const k in this._circleMarkerList) {
-      this._circleMarkerList[k].setStyle({fillColor: '#94CDFE'});
+      this._circleMarkerList[k].setStyle({ fillColor: '#94CDFE' });
     }
   }
 
